@@ -6,8 +6,8 @@ import {getConfigPageMy} from '../../../services/config';
 import { getUserIndex } from '../../../services/user';
 import {set as setGlobalData, get as getGlobalData} from '../../../global_data';
 import * as images from '../../../static/images/index';
-import { TabBar, MallButton } from '../../../components';
 import Layout from '../../../components/layout/index';
+import MallButton from '../../../components/button/index';
 import './index.less';
 
 class Index extends Component {

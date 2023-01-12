@@ -2,7 +2,6 @@ import React, { Component} from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text , Navigator, ScrollView, Image, Block} from '@tarojs/components';
 import { connect } from 'react-redux';
-import { TabBar } from '../../components';
 import './index.less';
 
 @connect(({catalog, goods}) => ({
