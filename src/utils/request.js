@@ -18,8 +18,9 @@ function request(url, data = {}, method = "GET") {
       success: function(res) {
 
         if (res.statusCode == 200) {
-
-          if (res.data.errno == 501) {
+          if (res.data.errno === undefined) {
+            resolve(res.data);
+          } else if (res.data.errno == 501) {
             // 清除登录相关内容
             try {
               Taro.removeStorageSync('userInfo');
