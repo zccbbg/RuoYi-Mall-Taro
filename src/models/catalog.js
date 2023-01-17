@@ -25,12 +25,38 @@ export default {
         title: '加载中...',
       })
       const res = yield call(getCatalogList);
-      yield put({type: 'saveCatalog', payload: res});
+      // 列表结构，转化成树结构
+      const pMap = {};
+      res.forEach(it => {
+        let child = pMap[it.parentId]
+        if (!child) {
+          child = [];
+          pMap[it.parentId] = child;
+        }
+        child.push(it);
+      })
+      const list = pMap['0'];
+      list.forEach(it => it.sort === null ? 9999 : it.sort);
+      list.sort((a, b) => b.sort - a.sort);
+      list.forEach(it => {
+        it.child = pMap[it.id];
+        if (it.child) {
+          it.child.forEach(it2 => it2.sort === null ? 9999 : it2.sort);
+          it.child.sort((a, b) => b.sort - a.sort);
+        }
+      })
+      yield put({type: 'saveCatalog', payload: {
+          categoryList: list,
+          currentCategory: list[0],
+          currentSubCategory: list[0].child
+        }});
       Taro.hideLoading();
     },
-    *getCurrentCategory({payload}, {call, put}) {
-      const res = yield call(getCurrentCategory, payload);
-      yield put({type: 'saveCurrentCategory', payload: res});
+    *getCurrentCategory({payload}, {put}) {
+      yield put({type: 'saveCurrentCategory', payload: {
+          currentCategory: payload,
+          currentSubCategory: payload.child,
+        }});
     }
   }
 };

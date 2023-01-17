@@ -34,10 +34,10 @@ class Index extends Component {
 
   switchCate = (data) => {
     const {currentCategory, dispatch} = this.props;
-    if (currentCategory.id == data.id) {
+    if (currentCategory.id === data.id) {
       return false;
     }
-    dispatch({type: 'catalog/getCurrentCategory', payload: data.id})
+    dispatch({type: 'catalog/getCurrentCategory', payload: data})
 
     // this.getCurrentCategory(event.currentTarget.dataset.id);
   }
@@ -58,7 +58,7 @@ class Index extends Component {
               {
                 Array.isArray(categoryList) && categoryList.map(item => {
                   return  <View
-                    className={`item ${ currentCategory.id == item.id ? 'active' : ''}`}
+                    className={`item ${ currentCategory.id === item.id ? 'active' : ''}`}
                     key='id'
                     onClick={() => this.switchCate(item)}
                   >
@@ -69,8 +69,8 @@ class Index extends Component {
             </ScrollView>
             <ScrollView className='cate' scrollY>
               <Navigator url='url' className='banner'>
-                <Image className='image' src={currentCategory.picUrl}></Image>
-                <View className='txt'>{currentCategory.frontName}</View>
+                <Image className='image' src={currentCategory.icon}></Image>
+                <View className='txt'>{currentCategory.name}</View>
               </Navigator>
               <View className='hd'>
                 <Text className='line'></Text>
@@ -81,7 +81,7 @@ class Index extends Component {
                 {
                   Array.isArray(currentSubCategory) && currentSubCategory.map((item, index) => {
                     return <Navigator url={`/pages/category/category?id=${item.id}`} className={`item ${(index+1) % 3 == 0 ? 'last' : ''}`} key={item.id}>
-                      <Image className='icon' src={item.picUrl}></Image>
+                      <Image className='icon' src={item.icon}></Image>
                       <Text className='txt'>{item.name}</Text>
                     </Navigator>
                   })

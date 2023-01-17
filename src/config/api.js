@@ -100,4 +100,5 @@ export default {
 export const RUOYI_MALL_ROOT = "http://localhost:8080/";
 export const RUOYI_MALL_API = {
   IndexUrl: RUOYI_MALL_ROOT + 'no-auth/home/home-cfg', //首页数据接口
+  CatalogList: RUOYI_MALL_ROOT + 'no-auth/category/all-categories', //首页数据接口
 };

@@ -1,11 +1,11 @@
 import request from '../utils/request';
-import Api from '../config/api';
+import Api, {RUOYI_MALL_API} from '../config/api';
 
 /**
  *  获取分类list
  */
 export async function getCatalogList() {
-  return request.get(Api.CatalogList);
+  return request.get(RUOYI_MALL_API.CatalogList);
 }
 
 
