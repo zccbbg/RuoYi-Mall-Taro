@@ -101,4 +101,6 @@ export const RUOYI_MALL_ROOT = "http://localhost:8080/";
 export const RUOYI_MALL_API = {
   IndexUrl: RUOYI_MALL_ROOT + 'no-auth/home/home-cfg', //首页数据接口
   CatalogList: RUOYI_MALL_ROOT + 'no-auth/category/all-categories', //首页数据接口
+  GoodsCategory: RUOYI_MALL_ROOT + 'no-auth/category/category-by-id', //获得分类数据
+  GoodsList: RUOYI_MALL_ROOT + 'no-auth/good/list', //获得商品列表
 };

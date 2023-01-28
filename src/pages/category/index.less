@@ -1,5 +1,7 @@
 .container {
   background: #f9f9f9;
+  min-height: 100vh;
+  margin-bottom: 0!important;
 }
 
 .cate-nav {
@@ -7,10 +9,11 @@
   left: 0;
   top: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .cate-nav-body {
-  height: 84rpx;
+  height: calc(1rem + 2px);
   white-space: nowrap;
   background: #fff;
   border-top: 1px solid rgba(0, 0, 0, 0.15);
@@ -19,18 +22,18 @@
 
 .cate-nav .item {
   display: inline-block;
-  height: 84rpx;
-  min-width: 130rpx;
-  padding: 0 15rpx;
+  height: 1rem;
+  min-width: 50px;
+  padding: 0 8px;
 }
 
 .cate-nav .item .name {
   display: block;
-  height: 84rpx;
-  padding: 0 20rpx;
-  line-height: 84rpx;
+  height: 1rem;
+  padding: 0 .75rem;
+  line-height: 1rem;
   color: #333;
-  font-size: 30rpx;
+  font-size: .6rem;
   width: auto;
 }
 
@@ -40,14 +43,13 @@
 }
 
 .cate-item {
-  margin-top: 94rpx;
+  margin-top: calc(1rem + 2px);
   height: auto;
   overflow: hidden;
 }
 
 .cate-item .h {
-  height: 145rpx;
-  width: 750rpx;
+  height: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,22 +58,19 @@
 
 .cate-item .h .name {
   display: block;
-  height: 35rpx;
-  margin-bottom: 18rpx;
-  font-size: 30rpx;
+  font-size: .6rem;
   color: #333;
 }
 
 .cate-item .h .desc {
   display: block;
-  height: 24rpx;
-  font-size: 24rpx;
+  height: 1rem;
+  font-size: .5rem;
   color: #999;
 }
 
 .cate-item .b {
-  width: 750rpx;
-  padding: 0 6.25rpx;
+  padding: 0 .2rem;
   height: auto;
   overflow: hidden;
 }
@@ -79,40 +78,23 @@
 .cate-item .b .item {
   float: left;
   background: #fff;
-  width: 365rpx;
-  margin-bottom: 6.25rpx;
-  padding-bottom: 33.333rpx;
+  width: calc(50% - .3rem);
+  margin: .2rem;
   height: auto;
   overflow: hidden;
   text-align: center;
 }
 
-.cate-item .b .item-b {
-  margin-left: 6.25rpx;
-}
-
-.cate-item .item .img {
-  width: 302rpx;
-  height: 302rpx;
-}
-
 .cate-item .item .name {
   display: block;
-  width: 365.625rpx;
-  height: 35rpx;
-  margin: 11.5rpx 0 22rpx 0;
   text-align: center;
   overflow: hidden;
-  padding: 0 20rpx;
-  font-size: 30rpx;
   color: #333;
 }
 
 .cate-item .item .price {
   display: block;
-  width: 365.625rpx;
-  height: 30rpx;
   text-align: center;
-  font-size: 30rpx;
+  font-size: .65rem;
   color: #ab956d;
 }

@@ -1,6 +1,5 @@
-import React, { PureComponent} from 'react';
-import Taro from '@tarojs/taro';
-import { View} from '@tarojs/components';
+import React, { Component } from 'react';
+import {View} from '@tarojs/components';
 
 import './empty.less';
 
