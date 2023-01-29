@@ -103,4 +103,6 @@ export const RUOYI_MALL_API = {
   CatalogList: RUOYI_MALL_ROOT + 'no-auth/category/all-categories', //首页数据接口
   GoodsCategory: RUOYI_MALL_ROOT + 'no-auth/category/category-by-id', //获得分类数据
   GoodsList: RUOYI_MALL_ROOT + 'no-auth/good/list', //获得商品列表
+  CartGoodsCount: RUOYI_MALL_ROOT + 'h5/cart/goodscount', // 获取购物车商品件数
+  GoodsDetail: RUOYI_MALL_ROOT + 'no-auth/good/detail', //获得商品的详情
 };

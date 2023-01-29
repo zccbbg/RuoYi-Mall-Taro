@@ -29,7 +29,7 @@ export async function getGoodsList1(data, params) {
  *  获取商品总数量
  */
 export async function getGoodsDetail(id) {
-  return request.get(Api.GoodsDetail, {id});
+  return request.get(RUOYI_MALL_API.GoodsDetail, {id});
 }
 
 /**

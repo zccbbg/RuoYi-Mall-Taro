@@ -15,6 +15,8 @@ class Index extends Component {
     goodsList: [],
     // 当前二级分类id
     id: 0,
+    // 当前一级分类
+    parentId: 0,
     // 当前二级分类
     currentCategory: {},
     scrollLeft: 0,
@@ -27,24 +29,24 @@ class Index extends Component {
   componentWillMount () {}
   componentDidMount () {
     // 页面初始化 options为页面跳转所带来的参数
-    const { id } = this.$instance.router.params;
-    if (id) {
-      this.setState({
-        id: parseInt(id)
-      }, () => {
-        Taro.getSystemInfo({
-          success: (res) => {
-            this.setState({
-              scrollHeight: res.windowHeight
-            });
-          }
-        });
-
-        this.getCategoryInfo();
-      });
+    const { id, parentId } = this.$instance.router.params;
+    if (!id && !parentId) {
+      return;
     }
+    this.setState({
+      id: +id,
+      parentId: +parentId,
+    }, () => {
+      Taro.getSystemInfo({
+        success: (res) => {
+          this.setState({
+            scrollHeight: res.windowHeight
+          });
+        }
+      });
 
-
+      this.getCategoryInfo();
+    });
   }
   componentWillReceiveProps (nextProps,nextConText) {}
   componentWillUnmount () {}
@@ -75,15 +77,28 @@ class Index extends Component {
   }
 
   getCategoryInfo = () => {
-    const {id} = this.state
-    getGoodsCategory({ id }).then(res => {
-      const currentCategory = res.find(it => it.id === id)
-      const parentCategory = res.find(it => it.id === currentCategory.parentId)
-      const navList = res.filter(it => it.level === currentCategory.level && it.parentId === currentCategory.parentId)
-        .sort((a,b) => b.sort - a.sort)
+    const {id, parentId} = this.state
+    const req = id ? { id, withChild: false } : { id: parentId, withChild: true }
+    getGoodsCategory(req).then(res => {
+      res = res.filter(it => it);
+      let currentCategory, parentCategory, navList, id1 = id;
+      if (id) {
+        currentCategory = res.find(it => it.id === id)
+        parentCategory = res.find(it => it.id === currentCategory.parentId)
+        navList = res.filter(it => it.level === currentCategory.level && it.parentId === currentCategory.parentId)
+          .sort((a,b) => b.sort - a.sort)
+      } else {
+        parentCategory = res.find(it => it.id === parentId)
+        navList = res.filter(it => it.level === (parentCategory.level + 1) && it.parentId === parentId)
+          .sort((a,b) => b.sort - a.sort)
+        currentCategory = navList[0]
+        id1 = currentCategory.id
+      }
+
       this.setState({
         navList,
-        currentCategory
+        currentCategory,
+        id: id1
       }, () => {
         Taro.setNavigationBarTitle({
           title: parentCategory.name

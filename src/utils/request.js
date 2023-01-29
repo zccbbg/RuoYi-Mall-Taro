@@ -17,9 +17,13 @@ function request(url, data = {}, method = "GET") {
       },
       success: function(res) {
 
-        if (res.statusCode == 200) {
+        if (res.statusCode === 200) {
           if (res.data.errno === undefined) {
-            resolve(res.data);
+            if (!res.data.code || res.data.code === 200) {
+              resolve(res.data);
+            } else {
+              reject(res.data);
+            }
           } else if (res.data.errno == 501) {
             // 清除登录相关内容
             try {

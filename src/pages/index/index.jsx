@@ -1,11 +1,10 @@
-import React, { PureComponent } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Navigator, Swiper, SwiperItem, Image, ScrollView, Block } from '@tarojs/components'
-import { connect } from 'react-redux';
-import { AtIcon, AtTag} from 'taro-ui';
-// import { TabBar } from '../../components';
-import { get as getGlobalData} from '../../global_data';
-import { couponReceive } from '../../services/coupon';
+import React, {PureComponent} from 'react';
+import Taro, {getCurrentInstance} from '@tarojs/taro'
+import {Block, Image, Navigator, Swiper, SwiperItem, Text, View} from '@tarojs/components'
+import {connect} from 'react-redux';
+import {AtIcon} from 'taro-ui';
+import {get as getGlobalData} from '../../global_data';
+import {couponReceive} from '../../services/coupon';
 
 import './index.less'
 
@@ -142,7 +141,7 @@ class Index extends PureComponent {
           <View className='m-menu'>
             {
               data.categoryList && data.categoryList.map(item => {
-                return <Navigator key={item.id} className='item' url={`/pages/category/category?id=${item.id}`}>
+                return <Navigator key={item.id} className='item' url={`/pages/category/category?parentId=${item.id}`}>
                   <Image className='img' src={item.icon} />
                   <Text className='txt'>{item.name}</Text>
                 </Navigator>
@@ -173,7 +172,7 @@ class Index extends PureComponent {
                     })
                   }
                 </View>
-                <Navigator url={`/pages/category/category?id=${item.id}`} className='t'>
+                <Navigator url={`/pages/category/category?parentId=${item.id}`} className='t'>
                   <View className='txt'>{'更多'+item.name+'好物 >'}</View>
                 </Navigator>
               </View>
