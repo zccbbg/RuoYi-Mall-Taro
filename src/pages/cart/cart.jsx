@@ -5,7 +5,11 @@ import { AtCheckbox } from 'taro-ui';
 import {get as getGlobalData} from '../../global_data';
 import { cartUpdate, cartDelete, cartChecked, getCartListApi } from '../../services/cart';
 
-import './index.less';
+if (Taro.getEnv() === Taro.ENV_TYPE.WEB) {
+  require('./index.h5.less');
+} else {
+  require('./index.less')
+}
 
 class Cart extends Component {
 
@@ -123,6 +127,12 @@ class Cart extends Component {
   }
 
   goLogin = () => {
+    if (Taro.getEnv() === Taro.ENV_TYPE.WEB) {
+      Taro.navigateTo({
+        url: "/pages/auth/accountLogin/accountLogin"
+      });
+      return
+    }
     Taro.navigateTo({
       url: "/pages/auth/login/login"
     });
@@ -269,14 +279,18 @@ class Cart extends Component {
     const {hasLogin, isEditCart, cartGoods, cartTotal, checkedAllStatus} = this.state;
     return (
       <Block>
-        <View className='bar-container container'>
+        <View className='container'>
           {
-            !hasLogin ? <View className='no-login'>
+            !hasLogin
+              ? <View className='no-login'>
               <View className='c'>
-                <Text className='text'>还没有登录</Text>
-                <Button className='button' style='background-color:#A9A9A9' onClick={this.goLogin}>去登录</Button>
+                <View className='mb1r'>
+                  <Text className='text'>还没有登录</Text>
+                </View>
+                <View className='button' onClick={this.goLogin}>去登录</View>
               </View>
-            </View> : <View class='login'>
+            </View>
+              : <View class='login'>
             <View className='service-policy'>
               <View className='item'>30天无忧退货</View>
               <View className='item'>48小时快速退款</View>
@@ -337,7 +351,6 @@ class Cart extends Component {
 
           </View>
           }
-
         </View>
       </Block>
     );

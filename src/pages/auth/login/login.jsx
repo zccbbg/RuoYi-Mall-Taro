@@ -45,7 +45,10 @@ class Login extends Component {
     return (
       <View className='container'>
         <View className='login-box'>
-          <Button type='primary' openType='getUserInfo' className='wx-login-btn' onGetUserInfo={this.wxLogin}>微信直接登录</Button>
+          {
+            Taro.getEnv() === Taro.ENV_TYPE.WEAPP &&
+            <Button type='primary' openType='getUserInfo' className='wx-login-btn' onGetUserInfo={this.wxLogin}>微信直接登录</Button>
+          }
           <Button type='primary' className='account-login-btn' onClick={this.accountLogin}>账号登录</Button>
         </View>
       </View>
