@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Taro from '@tarojs/taro';
-import { View, Text , Button, Image, Input, Block} from '@tarojs/components';
+import { View, Text , Image, Input, Block} from '@tarojs/components';
 import { AtCheckbox } from 'taro-ui';
 import {get as getGlobalData} from '../../global_data';
 import { cartUpdate, cartDelete, cartChecked, getCartListApi } from '../../services/cart';

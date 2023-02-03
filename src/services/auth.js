@@ -1,7 +1,7 @@
 
 
 import request from '../utils/request';
-import Api from '../config/api';
+import Api, {RUOYI_MALL_API} from '../config/api';
 
 /**
  *  微信登录
@@ -14,7 +14,14 @@ export async function loginByWeXin(payload) {
  *  用户登录
  */
 export async function loginByAccount(payload) {
-  return request.post(Api.AuthLoginByAccount, payload);
+  return request.post(RUOYI_MALL_API.AuthLoginByAccount, payload);
+}
+
+/**
+ *  用户登录
+ */
+export async function getUserInfo() {
+  return request.get(RUOYI_MALL_API.getInfo);
 }
 
 /**
