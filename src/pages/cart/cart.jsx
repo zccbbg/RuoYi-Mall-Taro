@@ -4,12 +4,7 @@ import { View, Text , Image, Input, Block} from '@tarojs/components';
 import { AtCheckbox } from 'taro-ui';
 import {get as getGlobalData} from '../../global_data';
 import { cartUpdate, cartDelete, cartChecked, getCartListApi } from '../../services/cart';
-
-if (Taro.getEnv() === Taro.ENV_TYPE.WEAPP) {
-  require('./index.less')
-} else {
-  require('./index.h5.less');
-}
+import './index.h5.less';
 
 class Cart extends Component {
 
