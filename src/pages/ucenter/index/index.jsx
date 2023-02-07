@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Taro from '@tarojs/taro';
-import { View, Block} from '@tarojs/components';
+import {View, Block} from '@tarojs/components';
 import {logOut} from '../../../services/auth';
 import {getConfigPageMy} from '../../../services/config';
-import { getUserIndex } from '../../../services/user';
+import {getUserIndex} from '../../../services/user';
 import {set as setGlobalData, get as getGlobalData} from '../../../global_data';
 import * as images from '../../../static/images/index';
 import Layout from '../../../components/layout/index';
@@ -12,7 +12,7 @@ import './index.less';
 
 class Index extends Component {
 
-  state={
+  state = {
     pageConfig: [],
     userInfo: {
       nickName: '昵称',
@@ -35,7 +35,7 @@ class Index extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     //获取用户的登录信息
     if (getGlobalData('hasLogin')) {
       let userInfo = Taro.getStorageSync('userInfo');
@@ -57,7 +57,7 @@ class Index extends Component {
       title: '',
       confirmColor: '#b4282d',
       content: '退出登录？',
-      success: function(res) {
+      success: function (res) {
         if (!res.confirm) {
           return;
         }
@@ -75,20 +75,22 @@ class Index extends Component {
   }
 
   render() {
-    const { userInfo, order, hasLogin, pageConfig } = this.state;
+    const {userInfo, order, hasLogin, pageConfig} = this.state;
     return (
       <Block>
-        <View className='bar-container container'>
-          <Layout pageConfig={pageConfig} userInfo={userInfo} order={order} />
-          <View className='footer'>
-            {
-              hasLogin &&  <MallButton className='logout' onClick={this.exitLogin}>退出登录</MallButton>
-            }
-          </View>
+        <View className='container'>
+          <Layout pageConfig={pageConfig} userInfo={userInfo} order={order}/>
+          {
+            hasLogin &&
+            <View className='footer'>
+              <MallButton className='logout' onClick={this.exitLogin}>退出登录</MallButton>
+            </View>
+          }
         </View>
       </Block>
 
     );
   }
 }
+
 export default Index;
