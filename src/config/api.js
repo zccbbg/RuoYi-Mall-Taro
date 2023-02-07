@@ -97,7 +97,7 @@ export default {
   UserIndex: WxApiRoot + 'user/index', //个人页面用户相关信息
   IssueList: WxApiRoot + 'issue/list', //帮助信息
 };
-export const RUOYI_MALL_ROOT = process.env.NODE_ENV === 'development' ? "http://localhost:8080/" : 'http://mall/ichengle.top/api/';
+export const RUOYI_MALL_ROOT = process.env.NODE_ENV === 'development' ? "http://localhost:8080/" : 'http://mall.ichengle.top/api/';
 export const RUOYI_MALL_API = {
   IndexUrl: RUOYI_MALL_ROOT + 'no-auth/home/home-cfg', //首页数据接口
   CatalogList: RUOYI_MALL_ROOT + 'no-auth/category/all-categories', //首页数据接口
