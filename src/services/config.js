@@ -9,10 +9,7 @@
 const myConfigData = [
   { type: 'config', title: '个人中心1', color: ''},
   { type: 'my', bgGradient: 'white', headPosition: 'center', memberLevel: 'block', pageStyle: 'normal', powerList: [
-    {type: 'coupon'},
-    {type: 'collect'},
     {type: 'footprint'},
-    {type: 'group'},
     {type: 'split'},
     {type: 'address'},
     {type: 'bindPhone'},

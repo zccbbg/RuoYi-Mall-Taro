@@ -197,10 +197,6 @@ class My extends PureComponent {
             <View className='info'>
               {userInfo.nickName}
             </View>
-            <View className='vip' onClick={this.handleVip}>
-              <View>微商城</View>
-              <AtIcon value='chevron-right' size='15' color='#fff'></AtIcon>
-            </View>
         </View>
         <View className='split-line'></View>
         <View className='container'>

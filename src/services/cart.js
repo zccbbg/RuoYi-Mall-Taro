@@ -1,5 +1,5 @@
 import request from '../utils/request';
-import Api from '../config/api';
+import Api, {RUOYI_MALL_API} from '../config/api';
 
 /**
  *  添加购物车
@@ -18,10 +18,10 @@ export async function cartFastAdd(payload) {
 }
 
 /**
- *  立即购买
+ *  获取购物车商品件数
  */
 export async function getCartGoodsCount(payload) {
-  return request.post(Api.CartGoodsCount, payload);
+  return request.post(RUOYI_MALL_API.CartGoodsCount, payload);
 }
 
 

@@ -3,8 +3,7 @@ import Taro from '@tarojs/taro';
 import { View, Text , Button, Input, Navigator, Image} from '@tarojs/components';
 import { AtIcon } from 'taro-ui';
 import {set as setGlobalData} from '../../../global_data';
-import { loginByAccount } from '../../../services/auth';
-// import { showErrorToast } from '../../../utils/util';
+import {getUserInfo, loginByAccount} from '../../../services/auth';
 import './index.less';
 
 class AccountLogin extends Component {
@@ -49,14 +48,17 @@ class AccountLogin extends Component {
         loginErrorCount: 0
       });
       setGlobalData('hasLogin', true);
-      Taro.setStorageSync('userInfo', res.userInfo);
       Taro.setStorage({
         key: "token",
         data: res.token,
         success: function() {
-          Taro.switchTab({
-            url: '/pages/ucenter/index/index'
-          });
+          getUserInfo().then(res1 => {
+            Taro.setStorageSync('userInfo', res1.user);
+            Taro.setStorageSync('userInfoAll', res1);
+            Taro.switchTab({
+              url: '/pages/ucenter/index/index'
+            });
+          })
         }
       });
     }).catch(() => {

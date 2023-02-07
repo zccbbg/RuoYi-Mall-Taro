@@ -1,5 +1,5 @@
 import request from '../utils/request';
-import Api from '../config/api';
+import Api, {RUOYI_MALL_API} from '../config/api';
 
 /**
  *  获取商品总数量
@@ -19,8 +19,9 @@ export async function getGoodsList({keyword, page, limit, sort, order, categoryI
 /**
  *  分页获取商品信息
  */
-export async function getGoodsList1(payload) {
-  return request.get(Api.GoodsList, payload);
+export async function getGoodsList1(data, params) {
+  const url = RUOYI_MALL_API.GoodsList + '?page=' + params.page + '&size=' + params.size;
+  return request.post(url, data);
 }
 
 
@@ -28,7 +29,7 @@ export async function getGoodsList1(payload) {
  *  获取商品总数量
  */
 export async function getGoodsDetail(id) {
-  return request.get(Api.GoodsDetail, {id});
+  return request.get(RUOYI_MALL_API.GoodsDetail, {id});
 }
 
 /**
@@ -49,6 +50,6 @@ export async function goodsCollectAddOrDelete(payload) {
  *  获取推荐商品
  */
 export async function getGoodsCategory(payload) {
-  return request.get(Api.GoodsCategory, payload);
+  return request.get(RUOYI_MALL_API.GoodsCategory, payload);
 }
 

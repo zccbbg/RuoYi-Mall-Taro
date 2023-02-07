@@ -40,6 +40,9 @@ export default {
     // },
     *getIndex(_, {call, put}) {
       const res = yield call(getIndex);
+      if (res.banners) {
+        res.banners = JSON.parse(res.banners);
+      }
       // console.log('--home--', res);
       yield put({type: 'save', payload: res});
     }
