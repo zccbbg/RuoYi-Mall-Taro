@@ -17,12 +17,12 @@ Taro_Mall是一款多端开源在线商城应用程序，后台是基于litemall
 
 h5
 
-<img src='./public/mobile.png' width='150' height='150'/>
+http://mall.ichengle.top/h5/#/pages/index/index
 
 
 后台系统地址
 
-http://39.97.252.98:8081/
+http://mall.ichengle.top/
 
 
 
@@ -35,18 +35,11 @@ http://39.97.252.98:8081/
 快速启动
 ------------
 
-#### 微信小程序
-* `git clone https://github.com/jiechud/taro-mall.git`
-* `npm install || yarn install`
-* `yarn dev:weapp` 启动服务
-*  用微信开发者工具打开dist目录
-
-#### 头条小程序
-* `yarn dev:tt`
-* 头条小程序开发工具打开dist目录
+#### 安装
+npm install -g @tarojs/cli@3.5.11
 
 #### h5
-* `yarn dev:h5` 启动服务
+* `npm run build:h5` 启动服务
 * 打开浏览器
 
 系列文章
