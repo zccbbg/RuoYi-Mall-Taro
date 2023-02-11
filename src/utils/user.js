@@ -1,19 +1,14 @@
 import Taro from '@tarojs/taro';
-import { loginByWeXin } from '../services/auth';
+import {loginByWeXin} from '../services/auth';
 
 /**
  * Promise封装wx.checkSession
  */
 function checkSession() {
-  return new Promise(function(resolve, reject) {
-    Taro.checkSession({
-      success: function() {
-        resolve(true);
-      },
-      fail: function() {
-        reject(false);
-      }
-    })
+  return new Promise(function (resolve, reject) {
+    return Taro.checkSession()
+      .then(() => resolve(true))
+      .catch(() => reject(false))
   });
 }
 
@@ -21,16 +16,16 @@ function checkSession() {
  * Promise封装wx.login
  */
 function login() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     Taro.login({
-      success: function(res) {
+      success: function (res) {
         if (res.code) {
           resolve(res);
         } else {
           reject(res);
         }
       },
-      fail: function(err) {
+      fail: function (err) {
         reject(err);
       }
     });
@@ -42,18 +37,18 @@ function login() {
  */
 export function loginByWeixin(userInfo) {
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     return login().then((res) => {
       //登录远程服务器
       loginByWeXin({
         code: res.code,
         userInfo: userInfo
       }).then(loginRes => {
-         //存储用户信息
-         Taro.setStorageSync('userInfo', loginRes.userInfo);
-         Taro.setStorageSync('token', loginRes.token);
+        //存储用户信息
+        Taro.setStorageSync('userInfo', loginRes.userInfo);
+        Taro.setStorageSync('token', loginRes.token);
 
-         resolve(loginRes);
+        resolve(loginRes);
       }).catch(err => {
         reject(err);
       })
@@ -68,15 +63,15 @@ export function loginByWeixin(userInfo) {
  * 判断用户是否登录
  */
 export function checkLogin() {
-  return new Promise(function(resolve, reject) {
-    if (Taro.getStorageSync('userInfo') && Taro.getStorageSync('token')) {
-      checkSession().then(() => {
-        resolve(true);
-      }).catch(() => {
-        reject(false);
-      });
-    } else {
-      reject(false);
+  return new Promise(function (resolve, reject) {
+    const hasLogin = Taro.getStorageSync('userInfo') && Taro.getStorageSync('token');
+    if (Taro.getEnv() === Taro.ENV_TYPE.WEB) {
+      return hasLogin ? resolve(true) : reject(false);
     }
+    checkSession().then(() => {
+      resolve(true);
+    }).catch(() => {
+      reject(false);
+    });
   });
 }

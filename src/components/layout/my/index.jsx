@@ -186,20 +186,19 @@ class My extends PureComponent {
   render() {
     const { config, userInfo, order } = this.props;
     const {orderData} = this.state;
-    console.log('config', config, userInfo, order);
     return (
       <View className='layout-my'>
         <View
           style={{backgroundImage: config.bgGradient === 'white' ? `linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255)), url(${images.headerBg})` : `url(${images.headerBg})`}}
           className={`header ${config.headPosition}`}
         >
-            <Image className='avatar' src={userInfo.avatarUrl}></Image>
+            <Image className='avatar' src={userInfo.avatar}></Image>
             <View className='info'>
               {userInfo.nickName}
             </View>
         </View>
         <View className='split-line'></View>
-        <View className='container'>
+        <View className='padding-broadside'>
           <View className='box-item'>
             <View className='box-item-header'>
               <View className='title'>我的订单</View>
@@ -222,7 +221,7 @@ class My extends PureComponent {
             </View>
           </View>
         </View>
-        <View className='container power-list'>
+        <View className='padding-broadside power-list'>
           {
             config.pageStyle === 'sudoku' &&  <AtGrid columnNum={5} hasBorder={false} data={this.convertPowerListSudoku()} />
           }

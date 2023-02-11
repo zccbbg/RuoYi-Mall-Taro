@@ -49,7 +49,7 @@ export async function bindPhone(payload) {
  *  退出登录
  */
 export async function logOut() {
-  return request.post(Api.AuthLogout);
+  return request.post(RUOYI_MALL_API.AuthLogout);
 }
 
 

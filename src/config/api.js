@@ -108,4 +108,5 @@ export const RUOYI_MALL_API = {
   wechatH5Login: RUOYI_MALL_ROOT + 'no-auth/wechat/h5-login', //手机端微信登陆
   AuthLoginByAccount: RUOYI_MALL_ROOT + 'login', //账号登录
   getInfo: RUOYI_MALL_ROOT + 'getInfo', // 获取用户信息
+  AuthLogout: RUOYI_MALL_ROOT + 'logout', //账号登出
 };

@@ -9,7 +9,6 @@ export async function addCart(payload) {
 }
 
 
-
 /**
  *  立即购买
  */
@@ -75,9 +74,13 @@ export async function cartChecked(payload) {
 }
 
 /**
- * 获取购物车列表
+ * TODO 获取购物车列表
  * @param {*} payload
  */
 export async function getCartListApi(payload) {
-  return request.get(Api.CartList, payload)
+  return Promise.resolve({
+    "cartTotal": {"goodsCount": 0, "checkedGoodsCount": 0, "goodsAmount": 0, "checkedGoodsAmount": 0},
+    "cartList": []
+  })
+  //return request.get(Api.CartList, payload)
 }

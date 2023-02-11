@@ -1,4 +1,3 @@
-
 // bgGradient // 背景渐变  normal white
 // headPosition // 头像位置 left center right
 // memberLevel // 会员等级是否显示 block none
@@ -7,15 +6,22 @@
 
 
 const myConfigData = [
-  { type: 'config', title: '个人中心1', color: ''},
-  { type: 'my', bgGradient: 'white', headPosition: 'center', memberLevel: 'block', pageStyle: 'normal', powerList: [
-    {type: 'footprint'},
-    {type: 'split'},
-    {type: 'address'},
-    {type: 'bindPhone'},
-    {type: 'customer'},
-    {type: 'about'}
-  ]}
+  {type: 'config', title: '个人中心1', color: ''},
+  {
+    type: 'my',
+    bgGradient: 'white',
+    headPosition: 'center',
+    memberLevel: 'block',
+    pageStyle: 'normal',
+    powerList: [
+      {type: 'footprint'},
+      {type: 'split'},
+      {type: 'address'},
+      {type: 'bindPhone'},
+      {type: 'customer'},
+      {type: 'about'}
+    ]
+  }
 ]
 
 /**

@@ -1,9 +1,26 @@
-const globalData = {}
+import Taro from "@tarojs/taro";
 
-export function set (key, val) {
-  globalData[key] = val
+const globalData = {}
+let timer;
+function persistence() {
+  clearTimeout(timer);
+  setTimeout(() => {
+    Taro.setStorageSync('globalData', globalData);
+  }, 200)
 }
 
-export function get (key) {
+function initState() {
+  const objs = Taro.getStorageSync('globalData');
+  Object.keys(objs).forEach(k => {
+    globalData[k] = objs[k];
+  })
+}
+initState();
+export function set(key, val) {
+  globalData[key] = val
+  persistence();
+}
+
+export function get(key) {
   return globalData[key]
 }

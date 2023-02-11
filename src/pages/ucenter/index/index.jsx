@@ -78,12 +78,12 @@ class Index extends Component {
     const {userInfo, order, hasLogin, pageConfig} = this.state;
     return (
       <Block>
-        <View className='container'>
+        <View className='ucenter-container'>
           <Layout pageConfig={pageConfig} userInfo={userInfo} order={order}/>
           {
             hasLogin &&
             <View className='footer'>
-              <MallButton className='logout' onClick={this.exitLogin}>退出登录</MallButton>
+              <View className='self-button logout-button' onClick={this.exitLogin}>退出登录</View>
             </View>
           }
         </View>
