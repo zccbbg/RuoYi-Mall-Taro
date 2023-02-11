@@ -16,7 +16,7 @@ class Index extends Component {
     pageConfig: [],
     userInfo: {
       nickName: '昵称',
-      avatarUrl: images.avatar
+      avatar: images.avatar
     },
     order: {
       unpaid: 0,

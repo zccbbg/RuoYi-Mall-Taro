@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import Taro from '@tarojs/taro';
+import Taro, {getCurrentInstance} from '@tarojs/taro';
 import { View, Text , Image, Input, Block} from '@tarojs/components';
 import { AtCheckbox } from 'taro-ui';
-import {get as getGlobalData} from '../../global_data';
+import {get as getGlobalData, set as setGlobalData} from '../../global_data';
 import { cartUpdate, cartDelete, cartChecked, getCartListApi } from '../../services/cart';
 import './index.h5.less';
 
 class Cart extends Component {
 
-
+  $instance = getCurrentInstance()
   state={
     cartGoods: [],
     cartTotal: {
@@ -31,9 +31,7 @@ class Cart extends Component {
   }
 
   componentWillMount () {}
-  componentDidMount () {}
-  componentWillUnmount () {}
-  componentDidShow () {
+  componentDidMount () {
     // 页面显示
     const hasLogin = getGlobalData('hasLogin')
     if (hasLogin) {
@@ -43,8 +41,9 @@ class Cart extends Component {
     this.setState({
       hasLogin: hasLogin
     });
-
   }
+  componentWillUnmount () {}
+  componentDidShow () {}
 
   getCartList = () => {
     getCartListApi().then(res => {
@@ -122,6 +121,7 @@ class Cart extends Component {
   }
 
   goLogin = () => {
+    setGlobalData('login_callback', this.$instance.router.path);
     if (Taro.getEnv() === Taro.ENV_TYPE.WEB) {
       Taro.navigateTo({
         url: "/pages/auth/accountLogin/accountLogin"
@@ -285,12 +285,7 @@ class Cart extends Component {
                 <View className='button' onClick={this.goLogin}>去登录</View>
               </View>
             </View>
-              : <View class='login'>
-            <View className='service-policy'>
-              <View className='item'>30天无忧退货</View>
-              <View className='item'>48小时快速退款</View>
-              <View className='item'>满88元免邮费</View>
-            </View>
+              : <View class='cart-wrapper'>
             {
               cartGoods.length <= 0 ? <View className='no-cart'>
                 <View className='c'>
@@ -304,22 +299,27 @@ class Cart extends Component {
                       {
                         cartGoods.map((item, index) => {
                           return <View className={`item ${isEditCart ? 'edit' : ''}`} key='id'>
-                            <AtCheckbox onChange={this.checkedItem} />
-                            {/* <van-checkbox value='{ item.checked }' bind:change='checkedItem' data-item-index='{index}'></van-checkbox> */}
+                            {/*<AtCheckbox onChange={this.checkedItem} />*/}
                             <View className='cart-goods'>
                               <Image className='img' src={item.picUrl}></Image>
                               <View className='info'>
                                 <View className='t'>
-                                  <Text className='name'>{item.goodsName}</Text>
-                                  <Text className='num'>x{item.number}</Text>
-                                </View>
-                                <View className='attr'>{ isEditCart ? '已选择:' : ''}{item.specifications||''}</View>
-                                <View className='b'>
-                                  <Text className='price'>￥{item.price}</Text>
-                                  <View className='selnum'>
-                                    <View className='cut' onClick={this.cutNumber} data-item-index={index}>-</View>
-                                    <Input value={item.number} className='number' disabled='true' type='number' />
-                                    <View className='add' onClick={this.addNumber} data-item-index={index}>+</View>
+                                  <View className='name'>{item.goodsName}</View>
+                                  <View className='attr'>{ isEditCart ? '已选择:' : ''}{item.specifications||''}</View>
+                                  <View className='row3'>
+                                    <Text className='price'>
+                                      ￥
+                                      <Text className='price-number'>{item.price}</Text>
+                                    </Text>
+                                    {
+                                      !isEditCart
+                                        ? <Text className='num'>x{item.number}</Text>
+                                        : <View className='selnum flex-center'>
+                                          <View className='cut' onClick={this.cutNumber} data-item-index={index}>-</View>
+                                          <Input value={item.number} className='number' disabled='true' type='number' />
+                                          <View className='add' onClick={this.addNumber} data-item-index={index}>+</View>
+                                        </View>
+                                    }
                                   </View>
                                 </View>
                               </View>
@@ -332,13 +332,12 @@ class Cart extends Component {
 
                 </View>
                 <View className='cart-bottom'>
-                  {/* <van-checkbox value='{ checkedAllStatus }' bind:change='checkedAll'>全选（{cartTotal.checkedGoodsCount}）</van-checkbox> */}
                   <View className='total'>{!isEditCart ? '￥'+cartTotal.checkedGoodsAmount : ''}</View>
                   <View class='action_btn_area'>
-                    <View className={!isEditCart ? 'edit' : 'sure'} onClick={this.editCart}>{!isEditCart ? '编辑' : '完成'}</View>
+                    <View className={'button1 ' + (!isEditCart ? 'edit' : 'sure')} onClick={this.editCart}>{!isEditCart ? '编辑' : '完成'}</View>
 
-                    { isEditCart && <View className='delete' onClick={this.deleteCart}>删除({cartTotal.checkedGoodsCount})</View>}
-                    { !isEditCart && <View className='checkout' onClick={this.checkoutOrder}>下单</View>}
+                    { isEditCart && <View className='button1 delete' onClick={this.deleteCart}>删除({cartTotal.checkedGoodsCount})</View>}
+                    { !isEditCart && <View className='button1 checkout' onClick={this.checkoutOrder}>下单</View>}
                   </View>
                 </View>
               </View>

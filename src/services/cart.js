@@ -79,8 +79,28 @@ export async function cartChecked(payload) {
  */
 export async function getCartListApi(payload) {
   return Promise.resolve({
-    "cartTotal": {"goodsCount": 0, "checkedGoodsCount": 0, "goodsAmount": 0, "checkedGoodsAmount": 0},
-    "cartList": []
+    "cartTotal": {
+      "goodsCount": 1,
+      "checkedGoodsCount": 1,
+      "goodsAmount": 79.00,
+      "checkedGoodsAmount": 79.00
+    },
+    "cartList": [{
+      "id": 652,
+      "userId": 556,
+      "goodsId": 1057036,
+      "goodsSn": "1057036",
+      "goodsName": "日式纯色水洗亚麻抱枕",
+      "productId": 71,
+      "price": 79.00,
+      "number": 1,
+      "specifications": ["标准"],
+      "checked": true,
+      "picUrl": "http://yanxuan.nosdn.127.net/8a9ee5ba08929cc9e40b973607d2f633.png",
+      "addTime": "2023-02-11 20:31:27",
+      "updateTime": "2023-02-11 20:31:27",
+      "deleted": false
+    }]
   })
   //return request.get(Api.CartList, payload)
 }
