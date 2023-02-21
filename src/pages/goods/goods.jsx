@@ -97,6 +97,9 @@ class Goods extends Component {
     if (!hasLogin) {
       return
     }
+    this.loadCartSum();
+  }
+  loadCartSum() {
     // 页面显示
     getCartGoodsCount().then(res => {
       this.setState({
@@ -106,7 +109,6 @@ class Goods extends Component {
       console.error(e)
     })
   }
-
   getGoodsInfo = () => {
     const {id} = this.state;
     getGoodsDetail(id).then(res => {
@@ -387,26 +389,17 @@ class Goods extends Component {
 
       // 添加购物车
       addCart({
-        goodsId: this.state.goods.id,
-        number: this.state.number,
-        productId: checkedProduct.id
+        skuId: this.state.checkedSku.id,
+        num: this.state.number
       }).then(res => {
         Taro.showToast({
           title: '添加成功'
         });
-        this.setState({
-          openAttr: !this.state.openAttr,
-          cartGoodsCount: res
+        const param = {openAttr: !this.state.openAttr,};
+        param.collect = this.state.userHasCollect == 1;
+        this.setState(param, () => {
+          this.loadCartSum();
         });
-        if (this.state.userHasCollect == 1) {
-          this.setState({
-            collect: true
-          });
-        } else {
-          this.setState({
-            collect: false
-          });
-        }
       })
 
     }

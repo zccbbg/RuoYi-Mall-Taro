@@ -9,16 +9,15 @@ class Cart extends Component {
 
   $instance = getCurrentInstance()
   state = {
+    // 购物车商品列表
     cartGoods: [],
-    cartTotal: {
-      'goodsCount': 0,
-      'goodsAmount': 0.00,
-      'checkedGoodsCount': 0,
-      'checkedGoodsAmount': 0.00
-    },
+    // 购物车规格总数
+    total: 0,
+    // 编辑购物车
     isEditCart: false,
-    checkedAllStatus: true,
-    editCartList: [],
+    // 选中的商品
+    checkedIds: [],
+    // 是否登录
     hasLogin: false
   }
 
@@ -33,32 +32,27 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    // 页面显示
-    const hasLogin = getGlobalData('hasLogin')
-    if (hasLogin) {
-      this.getCartList();
-    }
-
-    this.setState({
-      hasLogin: hasLogin
-    });
   }
 
   componentWillUnmount() {
   }
 
   componentDidShow() {
+    // 页面显示
+    const hasLogin = getGlobalData('hasLogin')
+    this.setState({hasLogin}, () => {
+      if (hasLogin) {
+        this.getCartList();
+      }
+    });
   }
 
   getCartList = () => {
-    getCartListApi().then(res => {
+    getCartListApi({}, {page: 0, size: 100}).then(res => {
+      const {totalElements, content} = res;
       this.setState({
-        cartGoods: res.cartList,
-        cartTotal: res.cartTotal
-      });
-
-      this.setState({
-        checkedAllStatus: this.isCheckedAll()
+        cartGoods: content,
+        total: totalElements
       });
     })
   }
@@ -73,61 +67,15 @@ class Cart extends Component {
   }
 
   deleteCart = () => {
+    const {checkedIds} = this.state
 
-    let productIds = this.state.cartGoods.filter(function (element, index, array) {
-      if (element.checked == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-
-    if (productIds.length <= 0) {
+    if (checkedIds.length <= 0) {
       return false;
     }
 
-    productIds = productIds.map(function (element, index, array) {
-      if (element.checked == true) {
-        return element.productId;
-      }
-    });
-
-    cartDelete({
-      productIds: productIds
-    }).then(res => {
-      console.log(res.data);
-      let cartList = res.cartList.map(v => {
-        v.checked = false;
-        return v;
-      });
-
-      this.setState({
-        cartGoods: cartList,
-        cartTotal: res.cartTotal
-      });
-
-      this.setState({
-        checkedAllStatus: this.isCheckedAll()
-      });
+    cartDelete(checkedIds).then(res => {
+      this.getCartList();
     })
-  }
-
-  isCheckedAll = () => {
-    //判断购物车商品已全选
-    return this.state.cartGoods.every(function (element, index, array) {
-      if (element.checked == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  }
-
-  doCheckedAll = () => {
-    // let checkedAll = this.isCheckedAll()
-    this.setState({
-      checkedAllStatus: this.isCheckedAll()
-    });
   }
 
   goLogin = () => {
@@ -165,43 +113,21 @@ class Cart extends Component {
     this.setState({
       cartGoods: this.state.cartGoods
     }, () => {
-      this.updateCart(cartItem.productId, cartItem.goodsId, number, cartItem.id);
+      cartUpdate({
+        number: number,
+        id: cartItem.id
+      })
     });
-
-  }
-
-  updateCart = (productId, goodsId, number, id) => {
-
-    cartUpdate({
-      productId: productId,
-      goodsId: goodsId,
-      number: number,
-      id: id
-    }).then(() => {
-      this.setState({
-        checkedAllStatus: this.isCheckedAll()
-      });
-    })
   }
 
   checkoutOrder = () => {
-    //获取已选择的商品
-
-    var checkedGoods = this.state.cartGoods.filter(function (element, index, array) {
-      if (element.checked == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-
-    if (checkedGoods.length <= 0) {
+    const {checkedIds} = this.state
+    if (checkedIds.length <= 0) {
       return false;
     }
-
-    // storage中设置了cartId，则是购物车购买
     try {
       Taro.setStorageSync('cartId', 0);
+      Taro.setStorageSync('checkedCartIds', checkedIds);
       Taro.navigateTo({
         url: '/pages/checkout/checkout'
       })
@@ -210,79 +136,30 @@ class Cart extends Component {
   }
 
   editCart = () => {
-    if (this.state.isEditCart) {
-      this.getCartList();
-      this.setState({
-        isEditCart: !this.state.isEditCart
-      });
-    } else {
-      //编辑状态
-      let tmpCartList = this.state.cartGoods.map(function (v) {
-        v.checked = false;
-        return v;
-      });
-      this.setState({
-        editCartList: this.state.cartGoods,
-        cartGoods: tmpCartList,
-        isEditCart: !this.state.isEditCart,
-        checkedAllStatus: this.isCheckedAll(),
-        'cartTotal.checkedGoodsCount': this.getCheckedGoodsCount()
-      });
-    }
-  }
-
-  checkedItem = (event) => {
-    let itemIndex = event.target.dataset.itemIndex;
-
-    let productIds = [];
-    productIds.push(this.state.cartGoods[itemIndex].productId);
-    if (!this.state.isEditCart) {
-      cartChecked({
-        productIds: productIds,
-        isChecked: this.state.cartGoods[itemIndex].checked ? 0 : 1
-      }).then(res => {
-        this.setState({
-          cartGoods: res.cartList,
-          cartTotal: res.cartTotal
-        });
-
-        this.setState({
-          checkedAllStatus: this.isCheckedAll()
-        });
-      })
-
-    } else {
-      //编辑状态
-      let tmpCartData = this.state.cartGoods.map(function (element, index, array) {
-        if (index == itemIndex) {
-          element.checked = !element.checked;
-        }
-
-        return element;
-      });
-
-      this.setState({
-        cartGoods: tmpCartData,
-        checkedAllStatus: this.isCheckedAll(),
-        'cartTotal.checkedGoodsCount': this.getCheckedGoodsCount()
-      });
-    }
-  }
-
-  getCheckedGoodsCount = () => {
-    let checkedGoodsCount = 0;
-    this.state.cartGoods.forEach(function (v) {
-      if (v.checked === true) {
-        checkedGoodsCount += v.number;
-      }
+    const {isEditCart} = this.state
+    this.setState({
+      isEditCart: !isEditCart
     });
-    console.log(checkedGoodsCount);
-    return checkedGoodsCount;
+  }
+
+  checkedItem = (item) => {
+    const { checkedIds } = this.state;
+    const idx = checkedIds.indexOf(item.id);
+    if (idx === -1) {
+      checkedIds.push(item.id);
+    } else {
+      checkedIds.splice(idx, 1);
+    }
+    this.setState({
+      checkedIds: [...checkedIds]
+    })
   }
 
   render() {
-
-    const {hasLogin, isEditCart, cartGoods, cartTotal, checkedAllStatus} = this.state;
+    const {hasLogin, isEditCart, cartGoods, checkedIds, total} = this.state;
+    const checkedNum = checkedIds.length;
+    const checkedAmount = cartGoods.filter(it => checkedIds.includes(it.id)).reduce((accu, it) => accu + it.price * it.quantity, 0);
+    const checkedAll = total === checkedIds.length;
     return (
       <Block>
         <View className='container'>
@@ -309,17 +186,21 @@ class Cart extends Component {
                         <View className='goods'>
                           {
                             cartGoods.map((item, index) => {
+                              let spec = '';
+                              if (item.spData) {
+                                const v = JSON.parse(item.spData);
+                                spec = Object.keys(v).map(k => `${k}: ${v[k]}`).join(';')
+                              }
                               return <View className={`item ${isEditCart ? 'edit' : ''}`} key='id'>
                                 <View className='cart-goods'>
                                   <View className='sp-middle'>
-                                    <Checkbox onChange={this.checkedItem}/>
+                                    <Checkbox checked={checkedIds.includes(item.id)} onClick={() => this.checkedItem(item)}></Checkbox>
                                   </View>
-                                  <Image className='img' src={item.picUrl}></Image>
+                                  <Image className='img' src={item.pic}></Image>
                                   <View className='info'>
                                     <View className='t'>
-                                      <View className='name'>{item.goodsName}</View>
-                                      <View
-                                        className='attr'>{isEditCart ? '已选择:' : ''}{item.specifications || ''}</View>
+                                      <View className='name'>{item.productName}</View>
+                                      <View className='attr'>{isEditCart ? '已选择:' : ''}{spec || ''}</View>
                                       <View className='row3'>
                                         <Text className='price'>
                                           ￥
@@ -327,13 +208,11 @@ class Cart extends Component {
                                         </Text>
                                         {
                                           !isEditCart
-                                            ? <Text className='num'>x{item.number}</Text>
+                                            ? <Text className='num'>x{item.quantity}</Text>
                                             : <View className='selnum flex-center'>
-                                              <View className='cut' onClick={this.cutNumber}
-                                                    data-item-index={index}>-</View>
-                                              <Input value={item.number} className='number' disabled='true' type='number'/>
-                                              <View className='add' onClick={this.addNumber}
-                                                    data-item-index={index}>+</View>
+                                              <View className='cut' onClick={this.cutNumber} data-item-index={index}>-</View>
+                                              <Input value={item.quantity} className='number' disabled='true' type='number'/>
+                                              <View className='add' onClick={this.addNumber} data-item-index={index}>+</View>
                                             </View>
                                         }
                                       </View>
@@ -349,24 +228,26 @@ class Cart extends Component {
                     </View>
                     <View className='cart-bottom'>
                       <View className='flex-center'>
-                        <Checkbox style={{marginTop: '-10px'}}></Checkbox>
-                        <Text className='info1 ml4'>全选</Text>
+                        <Checkbox checked={checkedAll} style={{marginTop: '-10px'}}></Checkbox>
+                        {
+                          !checkedAll && <Text className='info1 ml4'>全选</Text>
+                        }
                       </View>
                       {
                         !isEditCart &&
                         <View className='statistic sp-middle'>
-                          <View className='total'>{!isEditCart ? '￥' + cartTotal.checkedGoodsAmount : ''}</View>
+                          <View className='total'>{!isEditCart ? '￥' + checkedAmount : ''}</View>
                         </View>
                       }
                       {
                         isEditCart
                           ? <View className='flex-center'>
                             <View className='button1 sure' onClick={this.editCart}>完成</View>
-                            <View className='button1 delete' onClick={this.deleteCart}>删除({cartTotal.checkedGoodsCount})</View>
+                            <View className='button1 delete' onClick={this.deleteCart}>删除({checkedNum})</View>
                           </View>
                           : <View className='flex-center'>
-                              <View className='button1 checkout' onClick={this.checkoutOrder}>下单</View>
-                              <View className='button1 edit' onClick={this.editCart}>编辑</View>
+                            <View className='button1 checkout' onClick={this.checkoutOrder}>下单</View>
+                            <View className='button1 edit' onClick={this.editCart}>编辑</View>
                           </View>
                       }
                     </View>

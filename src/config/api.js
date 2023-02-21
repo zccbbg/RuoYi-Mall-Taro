@@ -28,11 +28,7 @@ export default {
   BrandList: WxApiRoot + 'brand/list', //品牌列表
   BrandDetail: WxApiRoot + 'brand/detail', //品牌详情
 
-  CartList: WxApiRoot + 'cart/index', //获取购物车的数据
-  CartAdd: WxApiRoot + 'cart/add', // 添加商品到购物车
   CartFastAdd: WxApiRoot + 'cart/fastadd', // 立即购买商品
-  CartUpdate: WxApiRoot + 'cart/update', // 更新购物车的商品
-  CartDelete: WxApiRoot + 'cart/delete', // 删除购物车的商品
   CartChecked: WxApiRoot + 'cart/checked', // 选择或取消选择商品
   CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数
   CartCheckout: WxApiRoot + 'cart/checkout', // 下单前信息确认
@@ -109,4 +105,8 @@ export const RUOYI_MALL_API = {
   AuthLoginByAccount: RUOYI_MALL_ROOT + 'login', //账号登录
   getInfo: RUOYI_MALL_ROOT + 'getInfo', // 获取用户信息
   AuthLogout: RUOYI_MALL_ROOT + 'logout', //账号登出
+  CartAdd: RUOYI_MALL_ROOT + 'h5/cart/add', // 添加商品到购物车
+  CartList: RUOYI_MALL_ROOT + 'h5/cart/list', //获取购物车的列表
+  CartUpdate: RUOYI_MALL_ROOT + 'h5/cart/modify', // 更新购物车的商品
+  CartDelete: RUOYI_MALL_ROOT + 'h5/cart/remove', // 删除购物车的商品
 };
