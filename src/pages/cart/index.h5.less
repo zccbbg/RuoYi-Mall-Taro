@@ -191,48 +191,72 @@ page {
         }
       }
     }
-
+    .flex-center {
+      display: flex;
+      align-items: center;
+    }
     .cart-bottom {
       position: fixed;
       bottom: 50Px;
       left: 0;
       right: 0;
       background: #fff;
+      padding: .25rem .5rem .25rem .75rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: .25rem .5rem;
+      line-height: 1;
       .total {
         font-size: .75rem;
       }
-      .action_btn_area {
-        display: flex;
-        align-items: center;
-        visibility: visible;
-        .button1 {
-          border-radius: 100px;
-          color: #f4f4f4;
-          padding: .5rem 1.25rem;
-          font-size: .5rem;
-          line-height: 1.2;
-        }
-        .edit {
-          background-image: linear-gradient(to right, #ab956d 0%, #ab956d 100%);
-        }
-        .delete {
-          background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
-        }
-        .sure {
-          background-image: linear-gradient(to right, #ab956d 0%, #ab956d 100%);
-        }
-        .checkout {
-          background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
-        }
+      .statistic {
+        flex: 1 1 0;
+        text-align: right;
+      }
+      .button1 {
+        border-radius: 100px;
+        color: #f4f4f4;
+        padding: .5rem 1.25rem;
+        font-size: .5rem;
+        line-height: 1.2;
+      }
+      .edit {
+        background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
+      }
+      .delete {
+        background-image: linear-gradient(to right, #9a9ba1 0%, #9a9ba1 100%);
+      }
+      .sure {
+        background-image: linear-gradient(to right, #ab956d 0%, #ab956d 100%);
+      }
+      .checkout {
+        background-image: linear-gradient(to right, #ab956d 0%, #ab956d 100%);
+      }
 
-        > .button1 + .button1 {
-          margin-left: .5rem;
-        }
+      .button1 + .button1 {
+        margin-left: .5rem;
       }
     }
+  }
+  .taro-checkbox_checked {
+    width: 16Px;
+    height: 16Px;
+    font-size: 16Px;
+    line-height: 16Px;
+  }
+  .sp-middle {
+    margin-right: .5rem;
+  }
+  .info1 {
+    color: #ccc;
+  }
+  .ml4 {
+    margin-left: 4Px;
+  }
+  .ml8 {
+    margin-left: 8Px;
+  }
+  .ml12 {
+    margin-left: 12Px;
   }
 }
