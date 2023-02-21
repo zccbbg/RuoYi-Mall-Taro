@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Taro, {getCurrentInstance} from '@tarojs/taro';
 import {View, Text, Image, Input, Block, Checkbox} from '@tarojs/components';
 import {get as getGlobalData, set as setGlobalData} from '../../global_data';
-import {cartUpdate, cartDelete, cartChecked, getCartListApi} from '../../services/cart';
+import {cartUpdate, cartDelete, cartChecked, getCartListApi, getAllCartIdApi} from '../../services/cart';
 import './index.h5.less';
 
 class Cart extends Component {
@@ -154,6 +154,20 @@ class Cart extends Component {
       checkedIds: [...checkedIds]
     })
   }
+  doCheckAll() {
+    const { total, checkedIds, cartGoods } = this.state
+    if (checkedIds.length === total) {
+      this.setState({checkedIds: []});
+      return;
+    }
+    if (cartGoods.length === total) {
+      this.setState({checkedIds: cartGoods.map(it => it.id)});
+      return;
+    }
+    getAllCartIdApi().then(res => {
+      this.setState({checkedIds: res});
+    })
+  }
 
   render() {
     const {hasLogin, isEditCart, cartGoods, checkedIds, total} = this.state;
@@ -228,7 +242,11 @@ class Cart extends Component {
                     </View>
                     <View className='cart-bottom'>
                       <View className='flex-center'>
-                        <Checkbox checked={checkedAll} style={{marginTop: '-10px'}}></Checkbox>
+                        <Checkbox
+                          checked={checkedAll}
+                          style={{marginTop: '-10px'}}
+                          onClick={() => this.doCheckAll()}
+                        ></Checkbox>
                         {
                           !checkedAll && <Text className='info1 ml4'>全选</Text>
                         }

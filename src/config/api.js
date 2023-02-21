@@ -109,4 +109,5 @@ export const RUOYI_MALL_API = {
   CartList: RUOYI_MALL_ROOT + 'h5/cart/list', //获取购物车的列表
   CartUpdate: RUOYI_MALL_ROOT + 'h5/cart/modify', // 更新购物车的商品
   CartDelete: RUOYI_MALL_ROOT + 'h5/cart/remove', // 删除购物车的商品
+  GetAllCartId: RUOYI_MALL_ROOT + 'h5/cart/cart-ids', // 删除购物车的商品
 };

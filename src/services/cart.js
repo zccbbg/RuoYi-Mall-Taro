@@ -81,3 +81,10 @@ export async function getCartListApi(data, pageReq) {
   const url = RUOYI_MALL_API.CartList + '?page=' + page + '&size=' + size;
   return request.post(url, data)
 }
+
+/**
+ * @param {*} payload
+ */
+export async function getAllCartIdApi() {
+  return request.get(RUOYI_MALL_API.GetAllCartId)
+}

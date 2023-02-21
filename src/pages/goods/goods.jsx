@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Taro, {getCurrentInstance} from '@tarojs/taro';
 import {Block, Image, Input, Navigator, RichText, Swiper, SwiperItem, Text, View} from '@tarojs/components';
 import {AtIcon} from 'taro-ui';
-import {getGoodsDetail, goodsCollectAddOrDelete} from '../../services/goods';
+import {getGoodsDetail} from '../../services/goods';
 import {addCart, cartFastAdd, getCartGoodsCount} from '../../services/cart';
 
 import {showErrorToast} from '../../utils/util';
@@ -29,11 +29,8 @@ class Goods extends Component {
     checkedSkuArr: [],
     // 选中的规格
     checkedSku: null,
-    productList: [],
     // 购物车数量
     cartGoodsCount: 0,
-    // 用户是否收藏该商品
-    userHasCollect: 0,
     // 数量
     number: 1,
     // 是否打开规格选择界面
@@ -46,7 +43,8 @@ class Goods extends Component {
     shareImage: '',
     // 商品售罄
     soldout: false,
-    canWrite: false, //用户是否获取了保存相册的权限
+    // 用户是否获取了保存相册的权限
+    canWrite: false,
   }
 
   componentWillMount() {
@@ -158,13 +156,7 @@ class Goods extends Component {
         product: res.product,
         brand: res.brand,
         specificationList,
-        productList: res.productList,
-        userHasCollect: res.userHasCollect,
         shareImage: res.shareImage,
-      });
-
-      this.setState({
-        collect: res.userHasCollect == 1
       });
     });
   }
@@ -276,22 +268,8 @@ class Goods extends Component {
     return checkedValues;
   }
 
-  isCheckedAllSpec = () => {
-    return !this.getCheckedSpecValue().some(function (v) {
-      if (v.valueId == 0) {
-        return true;
-      }
-    });
-  }
-
   getCheckedProductItem = (key) => {
-    return this.state.productList.filter(function (v) {
-      if (v.specifications.toString() == key.toString()) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+    return [];
   }
 
   getCheckedSpecKey = () => {
@@ -333,23 +311,10 @@ class Goods extends Component {
 
   //添加或是取消收藏
   addCollectOrNot = () => {
-
-    goodsCollectAddOrDelete({
-      type: 0,
-      valueId: this.state.id
-    }).then((res) => {
-      if (this.state.userHasCollect == 1) {
-        this.setState({
-          collect: false,
-          userHasCollect: 0
-        });
-      } else {
-        this.setState({
-          collect: true,
-          userHasCollect: 1
-        });
-      }
-    })
+    const {collect} = this.state;
+    this.setState({
+      collect: !collect,
+    });
   }
 
   openCartPage = () => {
@@ -359,93 +324,56 @@ class Goods extends Component {
   }
 
   addToCart = () => {
-    if (this.state.openAttr == false) {
+    const { openAttr, checkedSku, number } = this.state;
+    //提示选择完整规格
+    if (!checkedSku) {
+      showErrorToast('请选择完整规格');
       //打开规格选择窗口
-      this.setState({
-        openAttr: !this.state.openAttr
-      });
-    } else {
-
-      //提示选择完整规格
-      if (!this.isCheckedAllSpec()) {
-        showErrorToast('请选择完整规格');
-        return false;
-      }
-
-      //根据选中的规格，判断是否有对应的sku信息
-      let checkedProductArray = this.getCheckedProductItem(this.getCheckedSpecKey());
-      if (!checkedProductArray || checkedProductArray.length <= 0) {
-        //找不到对应的product信息，提示没有库存
-        showErrorToast('没有库存');
-        return false;
-      }
-
-      let checkedProduct = checkedProductArray[0];
-      //验证库存
-      if (checkedProduct.number <= 0) {
-        showErrorToast('没有库存');
-        return false;
-      }
-
-      // 添加购物车
-      addCart({
-        skuId: this.state.checkedSku.id,
-        num: this.state.number
-      }).then(res => {
-        Taro.showToast({
-          title: '添加成功'
+      if (!openAttr) {
+        this.setState({
+          openAttr: true
         });
-        const param = {openAttr: !this.state.openAttr,};
-        param.collect = this.state.userHasCollect == 1;
-        this.setState(param, () => {
-          this.loadCartSum();
-        });
-      })
-
+      }
+      return false;
     }
+
+    // 添加购物车
+    addCart({
+      skuId: checkedSku.id,
+      num: number
+    }).then(res => {
+      Taro.showToast({
+        title: '添加成功'
+      });
+      this.setState({openAttr: !openAttr}, () => {
+        this.loadCartSum();
+      });
+    })
   }
 
   addFast = () => {
-    if (this.state.openAttr == false) {
+    const { openAttr, checkedSku, number } = this.state;
+    //提示选择完整规格
+    if (!checkedSku) {
+      showErrorToast('请选择完整规格');
       //打开规格选择窗口
-      this.setState({
-        openAttr: !this.state.openAttr
-      });
-    } else {
-
-      //提示选择完整规格
-      if (!this.isCheckedAllSpec()) {
-        showErrorToast('请选择完整规格');
-        return false;
+      if (!openAttr) {
+        this.setState({
+          openAttr: true
+        });
       }
-
-      //根据选中的规格，判断是否有对应的sku信息
-      let checkedProductArray = this.getCheckedProductItem(this.getCheckedSpecKey());
-      if (!checkedProductArray || checkedProductArray.length <= 0) {
-        //找不到对应的product信息，提示没有库存
-        showErrorToast('没有库存');
-        return false;
-      }
-
-      let checkedProduct = checkedProductArray[0];
-      //验证库存
-      if (checkedProduct.number <= 0) {
-        showErrorToast('没有库存');
-        return false;
-      }
-
-      //立即购买
-      cartFastAdd({
-        goodsId: this.state.goods.id,
-        number: this.state.number,
-        productId: checkedProduct.id
-      }).then(res => {
-        Taro.setStorageSync('cartId', res);
-        Taro.navigateTo({
-          url: '/pages/checkout/checkout'
-        })
-      })
+      return false;
     }
+    //立即购买
+    cartFastAdd({
+      number,
+      skuId: checkedSku.id
+    }).then(res => {
+      Taro.setStorageSync('cartId', res);
+      Taro.navigateTo({
+        url: '/pages/checkout/checkout'
+      })
+    })
   }
 
   render() {
@@ -453,7 +381,6 @@ class Goods extends Component {
       canShare, collect, cartGoodsCount, soldout, number, specificationList, openAttr, canWrite,
       product,
       brand,
-      // comment, issueList,
       openShare,
       checkedSkuArr = [],
       checkedSku
