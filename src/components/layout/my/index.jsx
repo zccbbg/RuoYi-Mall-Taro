@@ -149,7 +149,7 @@ class My extends PureComponent {
         {
           item.map((child, index) => {
             return child.type === 'bindPhone' ?
-            <BindPhone>
+            <BindPhone key={index}>
               {
                 <AtListItem
                   key={child.type}
@@ -160,7 +160,7 @@ class My extends PureComponent {
                 />
               }
             </BindPhone> : child.type === 'customer' ?
-            <Contact>
+            <Contact key={index}>
               <AtListItem
                 key={child.type}
                 thumb={child.image}

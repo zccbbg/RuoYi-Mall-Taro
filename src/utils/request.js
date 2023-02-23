@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro';
 import {showErrorToast} from '../utils/util';
+import {logout} from "./user";
 
 
 /**
@@ -17,26 +18,19 @@ function request(url, data = {}, method = "GET") {
         'Authorization': 'Bearer ' + Taro.getStorageSync('token')
       },
       success: function(res) {
-
         if (res.statusCode === 200) {
           if (res.data.errno === undefined) {
-            if (!res.data.code || res.data.code === 200) {
+            const {code} = res.data
+            if (!code || code === 200) {
               resolve(res.data);
-            } else {
-              reject(res.data);
+              return
             }
+            if (code === 401) {
+              logout('/pages/auth/login/login');
+            }
+            reject(res.data);
           } else if (res.data.errno == 501) {
-            // 清除登录相关内容
-            try {
-              Taro.removeStorageSync('userInfo');
-              Taro.removeStorageSync('token');
-            } catch (e) {
-              // Do something when catch error
-            }
-            // 切换到登录页面
-            Taro.navigateTo({
-              url: '/pages/auth/login/login'
-            });
+            logout('/pages/auth/login/login');
           } else if(res.data.errno == 0) {
             resolve(res.data.data);
           } else {

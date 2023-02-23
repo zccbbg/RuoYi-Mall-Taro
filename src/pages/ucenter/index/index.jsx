@@ -9,6 +9,7 @@ import * as images from '../../../static/images/index';
 import Layout from '../../../components/layout/index';
 import MallButton from '../../../components/button/index';
 import './index.less';
+import {logout} from "../../../utils/user";
 
 class Index extends Component {
 
@@ -61,15 +62,7 @@ class Index extends Component {
         if (!res.confirm) {
           return;
         }
-        logOut().then(() => {
-          setGlobalData('hasLogin', false)
-          Taro.removeStorageSync('token');
-          Taro.removeStorageSync('userInfo');
-          Taro.reLaunch({
-            url: '/pages/index/index'
-          });
-        })
-
+        logout('/pages/index/index');
       }
     })
   }

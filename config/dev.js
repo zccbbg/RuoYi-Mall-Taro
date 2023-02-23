@@ -8,6 +8,7 @@ module.exports = {
   h5: {
     devServer: {
       port: 10086,
+      overlay: false
     },
   }
 }

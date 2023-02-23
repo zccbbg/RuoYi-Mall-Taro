@@ -20,7 +20,11 @@ const dvaApp = dva.createApp({
   },
 });
 const store = dvaApp.getStore();
-
+window.onunhandledrejection = event => {
+  console.error(event);
+  // 阻止默认处理（例如将错误输出到控制台）
+  event.preventDefault();
+};
 class App extends Component {
   componentWillMount() {
     this.update();

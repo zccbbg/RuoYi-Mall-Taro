@@ -59,7 +59,7 @@ class Index extends Component {
                 Array.isArray(categoryList) && categoryList.map(item => {
                   return  <View
                     className={`item ${ currentCategory.id === item.id ? 'active' : ''}`}
-                    key='id'
+                    key={item.id}
                     onClick={() => this.switchCate(item)}
                   >
                       {item.name}
