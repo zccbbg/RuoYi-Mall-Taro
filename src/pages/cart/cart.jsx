@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import Taro, {getCurrentInstance} from '@tarojs/taro';
-import {View, Text, Image, Input, Block, Checkbox} from '@tarojs/components';
+import {Block, Checkbox, Image, Input, Text, View} from '@tarojs/components';
 import {get as getGlobalData, set as setGlobalData} from '../../global_data';
-import {cartUpdate, cartDelete, cartChecked, getCartListApi, getAllCartIdApi} from '../../services/cart';
+import {cartDelete, cartUpdate, getAllCartIdApi, getCartListApi} from '../../services/cart';
 import './index.h5.less';
+import {STORAGE_KEYS} from "../../config/storageKeys";
 
 class Cart extends Component {
 
@@ -121,13 +122,13 @@ class Cart extends Component {
   }
 
   checkoutOrder = () => {
-    const {checkedIds} = this.state
+    const { checkedIds, cartGoods } = this.state
     if (checkedIds.length <= 0) {
+      Taro.showToast({title: '你还没有选择商品！'})
       return false;
     }
     try {
-      Taro.setStorageSync('cartId', 0);
-      Taro.setStorageSync('checkedCartIds', checkedIds);
+      Taro.setStorageSync(STORAGE_KEYS.SELECTED_cART_GOODS, cartGoods.filter(it => checkedIds.includes(it.id)))
       Taro.navigateTo({
         url: '/pages/checkout/checkout'
       })
