@@ -1,129 +1,128 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Taro from '@tarojs/taro';
-import { View, Text , Button} from '@tarojs/components';
-import { AtIcon } from 'taro-ui';
-import {getAddressListApi, deleteAddress} from '../../../services/address';
+import {connect} from "react-redux";
+import {Text, View} from '@tarojs/components';
+import {AtCheckbox, AtIcon} from 'taro-ui';
+import {deleteAddress, getAddressListApi} from '../../../services/address';
 
 import './index.less';
-import { Empty } from '../../../components';
+import {Empty} from '../../../components';
 
+@connect(({user}) => ({
+  addressList: user.addressList,
+  selectedAddress: user.selectedAddress
+}))
 class Index extends Component {
-
-  state={
-    addressList: [],
-    total: 0
+  state = {
+    showEdit: false
+  }
+  componentWillMount() {
   }
 
-  componentWillMount () {}
-  componentDidMount () {}
-  componentWillReceiveProps (nextProps,nextContext) {}
-  componentWillUnmount () {}
-  componentDidShow () {
-    // 页面显示
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+  }
+
+  componentDidShow() {
     this.getAddressList();
   }
-  componentDidHide () {}
-  componentDidCatchError () {}
-  componentDidNotFound () {}
+
+  componentDidHide() {
+  }
+
+  componentDidCatchError() {
+  }
+
+  componentDidNotFound() {
+  }
+
   getAddressList = () => {
-    getAddressListApi().then(res => {
-      this.setState({
-        addressList: res.list,
-        total: res.total
-      });
+    const {dispatch} = this.props;
+    dispatch({type: 'user/initAddressList'});
+  }
+
+  checkAddress(item) {
+    const {dispatch} = this.props;
+    dispatch({type: 'user/updateSelected', payload: item});
+    Taro.navigateBack();
+  }
+
+  addressAddOrUpdate(id) {
+    Taro.navigateTo({
+      url: '/pages/ucenter/addressAdd/addressAdd' + ( id ? '?id=' + id : '')
     })
   }
 
-
-  addressAddOrUpdate(event) {
-    console.log(event)
-
-    //返回之前，先取出上一页对象，并设置addressId
-    var pages = Taro.getCurrentPages();
-    var prevPage = pages[pages.length - 2];
-
-    if (prevPage.route == 'pages/checkout/checkout') {
-      try {
-        Taro.setStorageSync('addressId', event.currentTarget.dataset.addressId);
-      } catch (e) {
-
-      }
-
-      let addressId = event.currentTarget.dataset.addressId;
-      if (addressId && addressId != 0) {
-        Taro.navigateBack();
-      } else {
-        Taro.navigateTo({
-          url: '/pages/ucenter/addressAdd/addressAdd?id=' + addressId
-        })
-      }
-
-    } else {
-      Taro.navigateTo({
-        url: '/pages/ucenter/addressAdd/addressAdd?id=' + event.currentTarget.dataset.addressId
-      })
-    }
-  }
-
-  deleteAddress(event) {
+  deleteAddress(addressId) {
     Taro.showModal({
       title: '',
       content: '确定要删除地址？',
       success: (res) => {
         if (res.confirm) {
-          let addressId = event.target.dataset.addressId;
           deleteAddress({
             id: addressId
           }).then(() => {
             this.getAddressList();
-            Taro.removeStorage({
-              key: 'addressId',
-              success: function() {},
-            })
           })
-          console.log('用户点击确定')
         }
       }
     })
     return false;
 
   }
+
   render() {
-    const {addressList} = this.state;
-    console.log('--addressList---', addressList);
+    const { showEdit } = this.state;
+    const { addressList } = this.props;
     return (
       <View className='container'>
         {
           addressList.length > 0 && <View className='address-list'>
             {
-              addressList.map(item => {
-                return <View className='item' key={item.id} onClick={this.addressAddOrUpdate} data-address-id={item.id}>
-                  <View className='l'>
-                    <View className='name'>{item.name}</View>
-                    {
-                      item.isDefault && <View className='default'>默认</View>
-                    }
+              addressList.map((item) => {
+                return <View className='item' key={item.id} onClick={() => this.checkAddress(item)} data-address-id={item.id}>
+                  <View className='flex-center p-d5-rem'>
+                    <View className='l'>
+                      <View className='name'>{item.name}</View>
+                      {
+                        item.defaultStatus && <View className='default'>默认</View>
+                      }
+                    </View>
+                    <View className='c'>
+                      <View className='mobile'>{item.phone}</View>
+                      <View className='address'>{item.province}{item.city}{item.district}{item.detailAddress}</View>
+                    </View>
+                    <View className='r'>
+                      <View data-address-id={item.id} onClick={this.deleteAddress} className='del'>
+                        <AtIcon value='edit' />
+                      </View>
+                    </View>
                   </View>
-                  <View className='c'>
-                    <View className='mobile'>{item.tel}</View>
-                    <View className='address'>{item.addressDetail}</View>
-                  </View>
-                  <View className='r'>
-                    <View data-address-id={item.id} onClick={this.deleteAddress} className='del'><AtIcon value='delete' /></View>
-                  </View>
+                  {
+                    showEdit && <View className='flex-center p-d5-rem border-top'>
+                      <View className='flex-one'>
+                        <Text>默认地址</Text>
+                      </View>
+                      <Text onClick={() => this.deleteAddress(item.id)}>删除</Text>
+                    </View>
+                  }
                 </View>
               })
             }
           </View>
         }
-
         {
           addressList.length <= 0 && <Empty>没有收获地址，请添加</Empty>
         }
-
-        <View className='add-address' onClick={this.addressAddOrUpdate} data-address-id='0'>新建</View>
+        <View className='footer flex-center p-d5-rem ops'>
+          <View className='button-primary' onClick={() => this.addressAddOrUpdate()}>新建</View>
+          <View className='button-outline' onClick={() => this.setState({ showEdit: !showEdit })}>{!showEdit ? '管理' : '完成'}</View>
+        </View>
       </View>
     );
   }
 }
+
 export default Index;

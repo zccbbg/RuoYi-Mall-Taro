@@ -1,39 +1,30 @@
-
-
 import request from '../utils/request';
-import Api from '../config/api';
+import {RUOYI_MALL_API} from '../config/api';
 
 /**
  *  地址列表
  */
 export async function getAddressListApi(payload) {
-  return request.get(Api.AddressList, payload);
+  return request.get(RUOYI_MALL_API.AddressList, payload);
 }
-
-
-
-
 
 /**
  *  删除地址
  */
 export async function deleteAddress(payload) {
-  return request.post(Api.AddressDelete, payload);
+  return request.post(RUOYI_MALL_API.AddressDelete, payload);
 }
 
 
 /**
- *  报错地址
+ *  保存地址
  */
 export async function saveAddress(payload) {
-  return request.post(Api.AddressSave, payload);
+  return request.post(RUOYI_MALL_API.AddressSave, payload);
 }
-
-
-
 /**
- *  报错地址
+ *  地址详情
  */
 export async function addressDetail(payload) {
-  return request.get(Api.AddressDetail, payload);
+  return request.get(RUOYI_MALL_API.AddressDetail, payload);
 }

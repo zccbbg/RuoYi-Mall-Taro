@@ -1,5 +1,4 @@
-export var areaList =
-{
+export const areaList = {
   "province_list": {
     "110000": "北京市",
     "120000": "天津市",
@@ -3250,7 +3249,7 @@ export function getList(type, code) {
   }
 
   const list = getConfig(type);
-  result = Object.keys(list).map(code => ({
+  result = Object.keys(list).map((code) => ({
     code,
     name: list[code]
   }));

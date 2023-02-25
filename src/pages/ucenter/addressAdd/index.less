@@ -3,67 +3,76 @@ page {
   background:rgb(249, 249, 249);
 }
 
-.add-address .add-form {
-  background: #fff;
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
+.add-address-wrapper {
+  .add-form {
+    background: #fff;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
 
-.add-address .form-item {
-  height: 116px;
-  padding-left: 31.25px;
-  border-bottom: 1px solid #d9d9d9;
-  display: flex;
-  align-items: center;
-  padding-right: 31.25px;
-}
+  .form-item {
+    padding: 0 31.25px;
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    height: 96px;
+    position: relative;
+    &:after {
+      position: absolute;
+      content: '';
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-bottom: .5Px solid #d6e4ef;
+      transform: scaleY(.5);
+    }
+  }
 
-.add-address .input {
-  flex: 1;
-  height: 44px;
-  line-height: 44px;
-  overflow: hidden;
-}
+  .form-default {
+    height: 96px;
+    background: #fff;
+    font-size: 28px;
+    margin-top: -1Px;
+  }
 
-.add-address .form-default {
-  border-bottom: 1px solid #d9d9d9;
-  height: 96px;
-  background: #fff;
-  font-size: 28px;
-}
+  .input {
+    flex: 1;
+    height: 44px;
+    line-height: 44px;
+    overflow: hidden;
+  }
 
-// .add-address .form-default .van-checkbox .van-icon {
-//   color: #fff;
-// }
 
-.add-address .btns {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
-  display: flex;
-  height: 100px;
-  width: 100%;
-}
+  .btns {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    display: flex;
+    height: 100px;
+    width: 100%;
+  }
 
-.add-address .cannel, .add-address .save {
-  flex: 1;
-  height: 100px;
-  text-align: center;
-  line-height: 100px;
-  font-size: 28px;
-  color: #fff;
-  border: none;
-  border-radius: 0;
-}
+  .cannel, .save {
+    flex: 1;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 28px;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    margin: 0!important;
+  }
 
-.add-address .cannel {
-  background: #333;
-}
+  .cannel {
+    background: #333;
+  }
 
-.add-address .save {
-  background: #b4282d;
+  .save {
+    background: #b4282d;
+  }
 }
 
 .region-select {

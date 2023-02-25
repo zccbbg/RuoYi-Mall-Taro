@@ -49,11 +49,6 @@ export default {
   SearchHelper: WxApiRoot + 'search/helper', //搜索帮助
   SearchClearHistory: WxApiRoot + 'search/clearhistory', //搜索历史清楚
 
-  AddressList: WxApiRoot + 'address/list', //收货地址列表
-  AddressDetail: WxApiRoot + 'address/detail', //收货地址详情
-  AddressSave: WxApiRoot + 'address/save', //保存收货地址
-  AddressDelete: WxApiRoot + 'address/delete', //保存收货地址
-
   ExpressQuery: WxApiRoot + 'express/query', //物流查询
 
   RegionList: WxApiRoot + 'region/list', //获取区域列表
@@ -110,4 +105,10 @@ export const RUOYI_MALL_API = {
   CartUpdate: RUOYI_MALL_ROOT + 'h5/cart/modify', // 更新购物车的商品
   CartDelete: RUOYI_MALL_ROOT + 'h5/cart/remove', // 删除购物车的商品
   GetAllCartId: RUOYI_MALL_ROOT + 'h5/cart/cart-ids', // 删除购物车的商品
+
+  AddressList: RUOYI_MALL_ROOT + 'ucenter/user-address', //收货地址列表
+  AddressSave: RUOYI_MALL_ROOT + 'ucenter/add-update-user-address', // 保存或更新收货地址
+  AddressDelete: RUOYI_MALL_ROOT + 'ucenter/delete-user-address', //保存收货地址
+  AddressDetail: RUOYI_MALL_ROOT + 'ucenter/detail-user-address', //保存收货地址
+
 };
