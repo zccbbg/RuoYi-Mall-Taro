@@ -75,7 +75,7 @@ class Index extends Component {
           <Layout pageConfig={pageConfig} userInfo={userInfo} order={order}/>
           {
             hasLogin &&
-            <View className='footer'>
+            <View className='logout-wrapper'>
               <View className='self-button logout-button' onClick={this.exitLogin}>退出登录</View>
             </View>
           }

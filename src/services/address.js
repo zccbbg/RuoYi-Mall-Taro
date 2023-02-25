@@ -25,6 +25,6 @@ export async function saveAddress(payload) {
 /**
  *  地址详情
  */
-export async function addressDetail(payload) {
+export async function getAddressDetail(payload) {
   return request.get(RUOYI_MALL_API.AddressDetail, payload);
 }

@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 import Taro, {getCurrentInstance} from '@tarojs/taro';
-import {View, Button, Block, Input, ScrollView} from '@tarojs/components';
+import {Block, Button, Input, ScrollView, View} from '@tarojs/components';
 import {AtCheckbox} from 'taro-ui';
 import * as area from '../../../utils/area';
 import {showErrorToast} from '../../../utils/util';
 import * as check from '../../../utils/check';
-import {saveAddress, detailAddress} from '../../../services/address';
+import {getAddressDetail, saveAddress} from '../../../services/address';
 
 import './index.less';
-import {connect} from "react-redux";
 
 const checkboxOption = [{value: 'default', label: '设为默认地址'}];
 const getDefaultSelected = () => {
@@ -26,6 +26,7 @@ const getDefaultSelected = () => {
     }
   ];
 }
+
 @connect(({user}) => {
   return {
     addressList: user.addressList
@@ -60,14 +61,14 @@ class Index extends Component {
   componentDidMount() {
     // 页面初始化 options为页面跳转所带来的参数
     const {id} = this.$instance.router.params;
-    if (id) {
-      detailAddress({id})
+    /*if (id) {
+      getAddressDetail({id})
         .then(res => {
           this.setState({
             address: res
           });
         })
-    }
+    }*/
   }
 
   bindinputName = (event) => {
@@ -91,7 +92,7 @@ class Index extends Component {
 
     const {address} = this.state
     //设置区域选择数据
-    const {areaCode, province, city, district } = address;
+    const {areaCode, province, city, district} = address;
     if (areaCode) {
       const s1 = [
         {
@@ -142,7 +143,7 @@ class Index extends Component {
   }
 
   doneSelectRegion = () => {
-    const { address, selectedRegionList } = this.state;
+    const {address, selectedRegionList} = this.state;
     address.province = selectedRegionList[0].name;
     address.city = selectedRegionList[1].name;
     address.district = selectedRegionList[2].name;
@@ -155,7 +156,7 @@ class Index extends Component {
   }
 
   selectRegion = (regionItem) => {
-    const { regionType, selectedRegionList } = this.state
+    const {regionType, selectedRegionList} = this.state
     selectedRegionList[regionType] = regionItem;
 
     if (regionType === 3) {
@@ -212,7 +213,7 @@ class Index extends Component {
       showErrorToast('手机号不正确');
       return false;
     }
-    const { addressList } = this.props;
+    const {addressList} = this.props;
     saveAddress({
       id: address.id,
       name: address.name,
@@ -284,20 +285,16 @@ class Index extends Component {
         <View className='add-address-wrapper'>
           <View className='add-form'>
             <View className='form-item'>
-              <Input className='input' onInput={this.bindinputName} placeholder='姓名' value={address.name} autoFocus />
+              <Input className='input' onInput={this.bindinputName} placeholder='姓名' value={address.name} autoFocus/>
             </View>
             <View className='form-item'>
-              <Input className='input' onInput={this.bindinputMobile} value={address.phone} placeholder='手机号码' />
+              <Input className='input' onInput={this.bindinputMobile} value={address.phone} placeholder='手机号码'/>
             </View>
             <View className='form-item'>
-              <Input className='input' value={address.province + address.city + address.district} disabled
-                onClick={this.chooseRegion} placeholder='省份、城市、区县'
-              />
+              <Input className='input' value={address.province + address.city + address.district} disabled onClick={this.chooseRegion} placeholder='省份、城市、区县' />
             </View>
             <View className='form-item'>
-              <Input className='input' onInput={this.bindinputAddress} value={address.detailAddress}
-                placeholder='详细地址, 如街道、楼盘号等'
-              />
+              <Input className='input' onInput={this.bindinputAddress} value={address.detailAddress} placeholder='详细地址, 如街道、楼盘号等' />
             </View>
             <View className='form-default'>
               <AtCheckbox options={checkboxOption} selectedList={checkedList} onChange={this.bindIsDefault} />

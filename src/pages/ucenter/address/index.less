@@ -4,9 +4,14 @@ page {
   background:rgb(249, 249, 249);
 }
 
-.container {
+.address-container {
   height: 100%;
   width: 100%;
+  background-color: #f9f9f9;
+  .ops {
+    background-color: white;
+    box-shadow: 2px 2Px 10px 0 #cecece;
+  }
 }
 .p-d5-rem {
   padding: .5rem;
@@ -24,7 +29,9 @@ page {
   > .item + .item {
     margin-top: .25rem;
   }
-
+  .item-ops {
+    padding: .25rem .5rem;
+  }
   .l {
     width: 125px;
   }
@@ -83,31 +90,5 @@ page {
     display: block;
     width: 52px;
     height: 52px;
-  }
-}
-.footer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-[class^=button-] {
-  line-height: 98px;
-  font-size: 25px;
-  color: #f4f4f4;
-  border-radius: 50px;
-  text-align: center;
-}
-.button-primary {
-  background-image: linear-gradient(to right, #b4282d 0%, #B44F55 100%);
-}
-.button-outline {
-  color: #b4282d;
-  border: 1px solid #b4282d;
-}
-.ops {
-  justify-content: space-around;
-  [class^=button-] {
-    width: 45%;
   }
 }

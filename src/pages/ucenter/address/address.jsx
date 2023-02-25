@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Taro from '@tarojs/taro';
 import {connect} from "react-redux";
 import {Text, View} from '@tarojs/components';
-import {AtCheckbox, AtIcon} from 'taro-ui';
-import {deleteAddress, getAddressListApi} from '../../../services/address';
+import {AtIcon} from 'taro-ui';
+import {deleteAddress} from '../../../services/address';
 
 import './index.less';
 import {Empty} from '../../../components';
@@ -15,8 +15,6 @@ import {Empty} from '../../../components';
 class Index extends Component {
   state = {
     showEdit: false
-  }
-  componentWillMount() {
   }
 
   componentDidMount() {
@@ -51,7 +49,7 @@ class Index extends Component {
 
   addressAddOrUpdate(id) {
     Taro.navigateTo({
-      url: '/pages/ucenter/addressAdd/addressAdd' + ( id ? '?id=' + id : '')
+      url: '/pages/ucenter/addressAdd/addressAdd?id=' + id
     })
   }
 
@@ -77,7 +75,7 @@ class Index extends Component {
     const { showEdit } = this.state;
     const { addressList } = this.props;
     return (
-      <View className='container'>
+      <View className='address-container'>
         {
           addressList.length > 0 && <View className='address-list'>
             {
@@ -95,13 +93,13 @@ class Index extends Component {
                       <View className='address'>{item.province}{item.city}{item.district}{item.detailAddress}</View>
                     </View>
                     <View className='r'>
-                      <View data-address-id={item.id} onClick={this.deleteAddress} className='del'>
+                      <View onClick={() => this.addressAddOrUpdate(item.id)} className='del'>
                         <AtIcon value='edit' />
                       </View>
                     </View>
                   </View>
                   {
-                    showEdit && <View className='flex-center p-d5-rem border-top'>
+                    showEdit && <View className='flex-center border-top item-ops'>
                       <View className='flex-one'>
                         <Text>默认地址</Text>
                       </View>
