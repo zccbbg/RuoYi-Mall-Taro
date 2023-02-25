@@ -128,7 +128,7 @@ class Cart extends Component {
       return false;
     }
     try {
-      Taro.setStorageSync(STORAGE_KEYS.SELECTED_cART_GOODS, cartGoods.filter(it => checkedIds.includes(it.id)))
+      Taro.setStorageSync(STORAGE_KEYS.SELECTED_CART_GOODS, cartGoods.filter(it => checkedIds.includes(it.id)))
       Taro.navigateTo({
         url: '/pages/checkout/checkout'
       })
@@ -177,7 +177,7 @@ class Cart extends Component {
     const checkedAll = total === checkedIds.length;
     return (
       <Block>
-        <View className='container'>
+        <View className='cart-container'>
           {
             !hasLogin
               ? <View className='no-login'>

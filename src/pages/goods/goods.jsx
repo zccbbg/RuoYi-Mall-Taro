@@ -10,6 +10,7 @@ import {ImgFriend, ImgWeChat} from '../../static/images';
 
 import './index.less';
 import {get as getGlobalData} from "../../global_data";
+import {STORAGE_KEYS} from "../../config/storageKeys";
 
 class Goods extends Component {
 
@@ -352,7 +353,7 @@ class Goods extends Component {
   }
 
   addFast = () => {
-    const { openAttr, checkedSku, number } = this.state;
+    const { openAttr, checkedSku, number, product } = this.state;
     //提示选择完整规格
     if (!checkedSku) {
       showErrorToast('请选择完整规格');
@@ -364,15 +365,19 @@ class Goods extends Component {
       }
       return false;
     }
-    //立即购买
-    cartFastAdd({
-      number,
-      skuId: checkedSku.id
-    }).then(res => {
-      Taro.setStorageSync('cartId', res);
-      Taro.navigateTo({
-        url: '/pages/checkout/checkout'
-      })
+    Taro.setStorageSync(STORAGE_KEYS.SELECTED_CART_GOODS, [
+      {
+        price: checkedSku.price,
+        skuId: checkedSku.id,
+        productId: checkedSku.productId,
+        spData: JSON.stringify(checkedSku.spData),
+        pic: checkedSku.pic,
+        productName: product.name,
+        quantity: number
+      }
+    ])
+    Taro.navigateTo({
+      url: '/pages/checkout/checkout'
     })
   }
 

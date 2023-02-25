@@ -12,7 +12,7 @@ import {STORAGE_KEYS} from "../../config/storageKeys";
 class Index extends Component {
 
   state={
-    checkedGoodsList: Taro.getStorageSync(STORAGE_KEYS.SELECTED_cART_GOODS),
+    checkedGoodsList: Taro.getStorageSync(STORAGE_KEYS.SELECTED_CART_GOODS),
     addressId: 0,
     message: '',
   }
@@ -27,7 +27,7 @@ class Index extends Component {
 
   getCheckoutInfo = () => {
     this.setState({
-      checkedGoodsList: Taro.getStorageSync(STORAGE_KEYS.SELECTED_cART_GOODS),
+      checkedGoodsList: Taro.getStorageSync(STORAGE_KEYS.SELECTED_CART_GOODS),
     });
     /*cartCheckout({
       addressId: this.state.addressId,
