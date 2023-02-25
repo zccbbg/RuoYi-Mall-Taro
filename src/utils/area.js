@@ -3238,6 +3238,45 @@ export const areaList = {
   }
 }
 
+const { province_list, city_list, county_list } = areaList;
+// 先对市区分组
+const cityGroup = {}, countyGroup = {};
+Object.keys(county_list).forEach(it => {
+  const pcode = it.slice(0, 4);
+  if (!countyGroup[pcode]) {
+    countyGroup[pcode] = [];
+  }
+  countyGroup[pcode].push({ code: it, name: county_list[it]})
+})
+Object.keys(city_list).forEach(it => {
+  const pCode = it.slice(0, 2);
+  if (!cityGroup[pCode]) {
+    cityGroup[pCode] = [];
+  }
+  cityGroup[pCode].push({ code: it, name: city_list[it], children: countyGroup[it.slice(0, 4)]})
+})
+const nameTree = Object.keys(province_list).map(code => {
+    return {
+      code,
+      name: province_list[code],
+      children: cityGroup[code.slice(0, 2)]
+    }
+})
+export function getAreaCode({ province, city, district }) {
+  const p = nameTree.find(it => it.name === province);
+  if (!p) {
+    return null;
+  }
+  const c = p.children.find(it => it.name === city);
+  if (!c) {
+    return null;
+  }
+  const t = c.children.find(it => it.name === district);
+  if (!t) {
+    return null;
+  }
+  return t.code;
+}
 function getConfig(type) {
   return (areaList && areaList[`${type}_list`]) || {};
 }
@@ -3265,7 +3304,6 @@ export function getList(type, code) {
 
   return result;
 }
-
 // get index by code
 export function getIndex(type, code) {
   let compareNum = type === 'province' ? 2 : type === 'city' ? 4 : 6;

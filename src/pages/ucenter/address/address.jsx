@@ -47,10 +47,15 @@ class Index extends Component {
     Taro.navigateBack();
   }
 
-  addressAddOrUpdate(id) {
+  addressAddOrUpdate(id, e) {
     Taro.navigateTo({
-      url: '/pages/ucenter/addressAdd/addressAdd?id=' + id
+      url: '/pages/ucenter/addressAdd/addressAdd' + (id ? '?id=' + id : '')
     })
+    if (e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+    }
   }
 
   deleteAddress(addressId) {
@@ -80,8 +85,8 @@ class Index extends Component {
           addressList.length > 0 && <View className='address-list'>
             {
               addressList.map((item) => {
-                return <View className='item' key={item.id} onClick={() => this.checkAddress(item)} data-address-id={item.id}>
-                  <View className='flex-center p-d5-rem'>
+                return <View className='item' key={item.id} data-address-id={item.id}>
+                  <View className='flex-center p-d5-rem' onClick={() => this.checkAddress(item)}>
                     <View className='l'>
                       <View className='name'>{item.name}</View>
                       {
@@ -93,7 +98,7 @@ class Index extends Component {
                       <View className='address'>{item.province}{item.city}{item.district}{item.detailAddress}</View>
                     </View>
                     <View className='r'>
-                      <View onClick={() => this.addressAddOrUpdate(item.id)} className='del'>
+                      <View onClick={(e) => this.addressAddOrUpdate(item.id, e)} className='del'>
                         <AtIcon value='edit' />
                       </View>
                     </View>
@@ -115,7 +120,7 @@ class Index extends Component {
           addressList.length <= 0 && <Empty>没有收获地址，请添加</Empty>
         }
         <View className='footer flex-center p-d5-rem ops'>
-          <View className='button-primary' onClick={() => this.addressAddOrUpdate()}>新建</View>
+          <View className='button-primary' onClick={() => this.addressAddOrUpdate(null)}>新建</View>
           <View className='button-outline' onClick={() => this.setState({ showEdit: !showEdit })}>{!showEdit ? '管理' : '完成'}</View>
         </View>
       </View>

@@ -26,7 +26,7 @@ const getDefaultSelected = () => {
     }
   ];
 }
-
+const placeholderArr = getDefaultSelected();
 @connect(({user}) => {
   return {
     addressList: user.addressList
@@ -61,14 +61,22 @@ class Index extends Component {
   componentDidMount() {
     // 页面初始化 options为页面跳转所带来的参数
     const {id} = this.$instance.router.params;
-    /*if (id) {
+    if (id) {
       getAddressDetail({id})
         .then(res => {
+          // 根据省市区找到 areaCode
+          const { province, city, district } = res
+          const areaCode = area.getAreaCode({province, city, district})
+          const {defaultStatus} = res
           this.setState({
-            address: res
+            address: {
+              ...res,
+              defaultStatus: !!defaultStatus,
+              areaCode
+            }
           });
         })
-    }*/
+    }
   }
 
   bindinputName = (event) => {
@@ -175,6 +183,7 @@ class Index extends Component {
       // 点击市级，取县级
       s1 = area.getList('county', code.slice(0, 4))
     }
+    selectedRegionList.filter((it, idx) => idx > regionType).forEach(it => it.code = 0);
     this.setState({
       regionList: s1,
       selectedRegionList: selectedRegionList,
@@ -214,6 +223,7 @@ class Index extends Component {
       return false;
     }
     const {addressList} = this.props;
+    const defaultStatus = addressList.length === 0 || address.defaultStatus ? 1 : 0;
     saveAddress({
       id: address.id,
       name: address.name,
@@ -222,7 +232,8 @@ class Index extends Component {
       city: address.city,
       district: address.district,
       detailAddress: address.detailAddress,
-      defaultStatus: addressList.length === 0 || address.defaultStatus ? 1 : 0
+      idDefault: defaultStatus,
+      defaultStatus
     }).then(res => {
       Taro.navigateBack();
       const {dispatch} = this.props;
@@ -230,43 +241,28 @@ class Index extends Component {
     })
   }
 
-  selectRegionType = (event) => {
-    let regionTypeIndex = event.target.dataset.regionTypeIndex;
-    console.log('regionTypeIndex', regionTypeIndex)
-    let selectedRegionList = this.state.selectedRegionList;
+  selectRegionType = (clickIndex) => {
+    const { selectedRegionList, regionType } = this.state;
 
-    //判断是否可点击
-    if (regionTypeIndex === this.state.regionType || (regionTypeIndex - 1 >= 0 && selectedRegionList[regionTypeIndex - 1].code <= 0)) {
+    if (clickIndex >= regionType) {
       return false;
     }
 
-    let selectRegionItem = selectedRegionList[regionTypeIndex];
-    let code = selectRegionItem.code;
+    let code = selectedRegionList[clickIndex].code;
     let regionList;
-    if (regionTypeIndex === 0) {
+    if (clickIndex === 0) {
       // 点击省级，取省级
       regionList = area.getList('province');
-    } else if (regionTypeIndex === 1) {
+    } else if (clickIndex === 1) {
       // 点击市级，取市级
       regionList = area.getList('city', code.slice(0, 2));
     } else {
       // 点击县级，取县级
-      regionList = area.getList('district', code.slice(0, 4));
+      regionList = area.getList('county', code.slice(0, 4));
     }
-    console.log('regionList', regionList);
-    regionList = regionList.map(item => {
-      //标记已选择的
-      if (this.state.selectedRegionList[regionTypeIndex].code == item.code) {
-        item.selected = true;
-      } else {
-        item.selected = false;
-      }
-      return item;
-    })
-
     this.setState({
       regionList: regionList,
-      regionType: regionTypeIndex
+      regionType: clickIndex
     })
   }
 
@@ -315,7 +311,7 @@ class Index extends Component {
                       return <View
                         className={`item ${item.code === 0 ? 'disabled' : ''} ${regionType === index ? 'selected' : ''}`}
                         onClick={() => this.selectRegionType(index)} key={index}
-                      >{item.name}</View>
+                      >{item.code === 0 ? placeholderArr[index].name : item.name}</View>
                     })
                   }
                 </View>

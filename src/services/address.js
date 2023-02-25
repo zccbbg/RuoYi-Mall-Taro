@@ -12,7 +12,8 @@ export async function getAddressListApi(payload) {
  *  删除地址
  */
 export async function deleteAddress(payload) {
-  return request.post(RUOYI_MALL_API.AddressDelete, payload);
+  const url = RUOYI_MALL_API.AddressDelete
+  return request( url, [payload.id], 'DELETE');
 }
 
 
