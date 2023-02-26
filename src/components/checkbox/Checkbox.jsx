@@ -1,4 +1,4 @@
-import {AtCheckbox, AtIcon} from "taro-ui";
+import {AtIcon} from "taro-ui";
 import React from "react";
 import {View} from "@tarojs/components";
 import './index.less';
@@ -6,16 +6,14 @@ import './index.less';
 export default class Checkbox extends React.Component {
 
   bindIsDefault(v) {
-    this.props.onChange(v.includes('default'));
+    this.props.onChange(v);
   }
 
   render() {
     const {checked, label} = this.props;
-    const checkboxOption = [{value: 'default', label: label || '设为默认地址'}];
-    const checkedList = checked ? ['default'] : [];
     return (
-      <View className='checkbox-wrapper'>
-        <View className='check'>
+      <View className='checkbox-wrapper' onClick={this.bindIsDefault.bind(this, !checked)}>
+        <View className={'check' + (checked ? ' checked' : '')}>
           {
             checked ? <AtIcon value='check' /> : ''
           }

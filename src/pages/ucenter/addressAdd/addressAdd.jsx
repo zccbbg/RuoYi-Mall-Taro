@@ -293,7 +293,7 @@ class Index extends Component {
             <View className='form-item'>
               <Input className='input' onInput={this.bindinputAddress} value={address.detailAddress} placeholder='详细地址, 如街道、楼盘号等' />
             </View>
-            <View className='form-default'>
+            <View className='form-item'>
               <Checkbox checked={address.defaultStatus} onChange={this.bindIsDefault} />
             </View>
           </View>

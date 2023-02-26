@@ -99,7 +99,7 @@ class Index extends Component {
                       <View className='address'>{item.province}{item.city}{item.district}{item.detailAddress}</View>
                     </View>
                     <View className='r'>
-                      <View onClick={(e) => this.addressAddOrUpdate(item.id, e)} className='del'>
+                      <View onClick={(e) => this.addressAddOrUpdate(item.id, e)} className='del tr'>
                         <AtIcon value='edit' />
                       </View>
                     </View>
@@ -108,11 +108,11 @@ class Index extends Component {
                     showEdit && <View className='flex-center border-top item-ops'>
                       <View className='flex-one'>
                         <Checkbox checked={item.defaultStatus} onChange={(v) => {
-                          dispatch({type: 'user/updateItem', payload: { index, item: {defaultStatus: v} }})
+                          dispatch({type: 'user/updateItem', payload: { index, item: {defaultStatus: v ? 1 : 0} }})
                         }} label='默认地址'
                         />
                       </View>
-                      <Text onClick={() => this.deleteAddress(item.id)}>删除</Text>
+                      <Text className='clickable' onClick={() => this.deleteAddress(item.id)}>删除</Text>
                     </View>
                   }
                 </View>

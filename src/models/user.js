@@ -1,4 +1,4 @@
-import {getAddressListApi} from "../services/address";
+import {getAddressListApi, saveAddress} from "../services/address";
 
 export default {
   namespace: 'user',
@@ -13,15 +13,12 @@ export default {
         state.selectedAddress = payload[0];
       }
     },
-    updateSelected1(state, {payload}) {
+    updateSelected1: (state, {payload}) =>{
       state.selectedAddress = payload;
     },
-    updateItem(state, {payload}) {
-      const {index, item} = payload
-      state.addressList[index] = {
-        ...state.addressList[index],
-        ...item,
-      };
+    updateItem1: (state, {payload}) => {
+      const {index, item} = payload;
+      state.addressList[index] = item;
     }
   },
   effects: {
@@ -32,8 +29,13 @@ export default {
     *updateSelected({payload}, { put }) {
       yield put({ type: 'updateSelected1', payload });
     },
-    *updateItem({payload}, { put }) {
-      yield put({ type: 'updateItem', payload });
+    *updateItem({payload}, { put, call, select }) {
+      const addressList = yield select(state => {
+        return state.user.addressList
+      })
+      const { index, item } = payload;
+      const res = yield call(() => saveAddress({...addressList[index], ...item}))
+      yield put({ type: 'updateItem1', payload: {index, item: res} });
     }
   }
 };
