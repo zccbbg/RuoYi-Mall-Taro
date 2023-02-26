@@ -94,7 +94,7 @@ class AccountLogin extends Component {
   render() {
     const { username, password } = this.state;
     return (
-      <View className='container'>
+      <View className='account-login-container'>
         <View className='form-box'>
 
           <View className='form-item'>

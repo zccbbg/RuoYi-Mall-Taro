@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {Text, View} from '@tarojs/components';
 import {AtIcon} from 'taro-ui';
 import {deleteAddress} from '../../../services/address';
+import Checkbox from '../../../components/checkbox/Checkbox';
 
 import './index.less';
 import {Empty} from '../../../components';
@@ -78,19 +79,19 @@ class Index extends Component {
 
   render() {
     const { showEdit } = this.state;
-    const { addressList } = this.props;
+    const { addressList, dispatch } = this.props;
     return (
       <View className='address-container'>
         {
           addressList.length > 0 && <View className='address-list'>
             {
-              addressList.map((item) => {
+              addressList.map((item, index) => {
                 return <View className='item' key={item.id} data-address-id={item.id}>
                   <View className='flex-center p-d5-rem' onClick={() => this.checkAddress(item)}>
                     <View className='l'>
                       <View className='name'>{item.name}</View>
                       {
-                        item.defaultStatus && <View className='default'>默认</View>
+                        item.defaultStatus ? <View className='default'>默认</View> : ''
                       }
                     </View>
                     <View className='c'>
@@ -106,7 +107,10 @@ class Index extends Component {
                   {
                     showEdit && <View className='flex-center border-top item-ops'>
                       <View className='flex-one'>
-                        <Text>默认地址</Text>
+                        <Checkbox checked={item.defaultStatus} onChange={(v) => {
+                          dispatch({type: 'user/updateItem', payload: { index, item: {defaultStatus: v} }})
+                        }} label='默认地址'
+                        />
                       </View>
                       <Text onClick={() => this.deleteAddress(item.id)}>删除</Text>
                     </View>

@@ -138,7 +138,7 @@ div, img, span, navigator {
   bottom: 0;
   right: 0;
 }
-[class^=button-] {
+[class*=button-] {
   line-height: 98px;
   font-size: 25px;
   color: #f4f4f4;
@@ -152,9 +152,14 @@ div, img, span, navigator {
   color: #b4282d;
   border: 1px solid #b4282d;
 }
+.button-default {
+  background-color: #cecece;
+  border: 1px solid #cecece;
+  color: white;
+}
 .ops {
   justify-content: space-around;
-  [class^=button-] {
+  > [class*=button-] {
     width: 45%;
   }
 }

@@ -15,6 +15,13 @@ export default {
     },
     updateSelected1(state, {payload}) {
       state.selectedAddress = payload;
+    },
+    updateItem(state, {payload}) {
+      const {index, item} = payload
+      state.addressList[index] = {
+        ...state.addressList[index],
+        ...item,
+      };
     }
   },
   effects: {
@@ -24,6 +31,9 @@ export default {
     },
     *updateSelected({payload}, { put }) {
       yield put({ type: 'updateSelected1', payload });
+    },
+    *updateItem({payload}, { put }) {
+      yield put({ type: 'updateItem', payload });
     }
   }
 };
