@@ -7,3 +7,7 @@ import {RUOYI_MALL_API} from '../config/api';
 export async function getIndex() {
   return request.get(RUOYI_MALL_API.IndexUrl);
 }
+
+export async function getCaptcha() {
+  return request.get(RUOYI_MALL_API.CaptchaImage);
+}

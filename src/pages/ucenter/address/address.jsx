@@ -52,10 +52,8 @@ class Index extends Component {
     Taro.navigateTo({
       url: '/pages/ucenter/addressAdd/addressAdd' + (id ? '?id=' + id : '')
     })
-    if (e) {
-      if (e.stopPropagation) {
-        e.stopPropagation();
-      }
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
     }
   }
 
