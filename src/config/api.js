@@ -54,7 +54,6 @@ export default {
   RegionList: WxApiRoot + 'region/list', //获取区域列表
 
   OrderPrepay: WxApiRoot + 'order/prepay', // 订单的预支付会话
-  OrderList: WxApiRoot + 'order/list', //订单列表
   OrderDetail: WxApiRoot + 'order/detail', //订单详情
   OrderCancel: WxApiRoot + 'order/cancel', //取消订单
   OrderRefund: WxApiRoot + 'order/refund', //退款取消订单
@@ -113,4 +112,5 @@ export const RUOYI_MALL_API = {
   AddressDetail: RUOYI_MALL_ROOT + 'ucenter/detail-user-address', //保存收货地址
 
   OrderSubmit: RUOYI_MALL_ROOT + 'h5-order/submit', // 提交订单
+  OrderList: RUOYI_MALL_ROOT + 'h5-order/orders', //订单列表
 };

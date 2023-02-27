@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import Taro from '@tarojs/taro';
 import {Image, Input, Text, View} from '@tarojs/components';
-import {orderSubmit} from '../../services/cart';
+import {cartDelete, orderSubmit} from '../../services/cart';
 import {showErrorToast} from '../../utils/util';
 
 import './index.less';
@@ -64,6 +64,11 @@ class Index extends Component {
       note: message,
       skus: checkedGoodsList.map(it => ({ skuId: it.skuId, quantity: it.quantity }))
     }).then(res => {
+      // 结算成功，如果是购物车下单，删除购物车商品
+      const ids = checkedGoodsList.map(it => it.id).filter(it => it)
+      if (ids.length > 0) {
+        cartDelete(ids);
+      }
       const orderId = res.orderId;
       Taro.redirectTo({
         url: '/pages/payResult/payResult?status=1&orderId=' + orderId
