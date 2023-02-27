@@ -20,12 +20,14 @@ class AccountLogin extends Component {
 
   componentWillMount () {}
   componentDidMount () {
+    this.updateCaptcha()
+  }
+  updateCaptcha() {
     getCaptcha().then(res => {
       const {uuid, img} = res
       this.setState({ uuid, imageContent: img })
     })
   }
-
   bindUsernameInput = (e) => {
     this.setState({
       username: e.target.value
@@ -71,12 +73,11 @@ class AccountLogin extends Component {
           })
         }
       });
-    }).catch(() => {
-
-      this.setState({
-        loginErrorCount: this.state.loginErrorCount + 1
-      })
-
+    }).catch((e) => {
+      if (e && e.data === 'user.jcaptcha.expire') {
+        this.updateCaptcha()
+      }
+      Taro.showToast({ icon: 'error', title: e.msg || JSON.stringify(e) })
       setGlobalData('hasLogin', false);
     })
   }
@@ -122,7 +123,7 @@ class AccountLogin extends Component {
             }} placeholder='验证码'
             />
             { code && code.length > 0 && <View className='clear'><AtIcon value='close-circle' size='14' color='#666' onClick={() => this.clearInput('clear-code')} /></View>}
-            { imageContent && <Image className='code-img' src={'data:image/gif;base64,' + imageContent}></Image>}
+            { imageContent && <Image className='code-img' src={'data:image/gif;base64,' + imageContent} onClick={this.updateCaptcha.bind(this)}></Image>}
           </View>
 
           <View className='button-primary mt1rem' onClick={this.accountLogin}>账号登录</View>
