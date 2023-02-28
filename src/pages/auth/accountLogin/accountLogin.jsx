@@ -68,7 +68,7 @@ class AccountLogin extends Component {
             Taro.setStorageSync('userInfo', res1.user);
             Taro.setStorageSync('userInfoAll', res1);
             Taro.switchTab({
-              url: getGlobalData('login_callback') || '/pages/ucenter/index/index'
+              url: '/pages/ucenter/index/index'
             });
           })
         }

@@ -80,7 +80,6 @@ class Cart extends Component {
   }
 
   goLogin = () => {
-    setGlobalData('login_callback', this.$instance.router.path);
     Taro.navigateTo({
       url: "/pages/auth/login/login"
     });
