@@ -46,6 +46,9 @@ const config = {
   },
   h5: {
     publicPath: '/',
+    router: {
+      mode: 'browser',
+    },
     staticDirectory: 'static',
     esnextModules: ['taro-ui'],
     postcss: {
