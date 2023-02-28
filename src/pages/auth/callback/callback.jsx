@@ -20,7 +20,7 @@ export default class Callback extends Component {
       setGlobalData('hasLogin', true);
       Taro.setStorage({
         key: "token",
-        data: res,
+        data: res.data,
         success: function() {
           getUserInfo().then(res1 => {
             Taro.setStorageSync('userInfo', res1.user);
