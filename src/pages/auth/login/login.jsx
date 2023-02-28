@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Taro from '@tarojs/taro';
-import { View , Button} from '@tarojs/components';
-import { showErrorToast } from '../../../utils/util';
+import {View, Button} from '@tarojs/components';
+import {showErrorToast} from '../../../utils/util';
 import {set as setGlobalData} from '../../../global_data';
 
 import * as user from '../../../utils/user';
 
 import './index.less';
-const isWx = Taro.getEnv() === Taro.ENV_TYPE.WEAPP || /MicroMessenger/i.test(window.navigator.userAgent)
+
 class Login extends Component {
 
-  state={}
+  state = {}
 
   accountLogin = () => {
     Taro.navigateTo({
@@ -51,13 +51,17 @@ class Login extends Component {
       <View className='container'>
         <View className='login-box'>
           {
-            isWx &&
-            <Button type='primary' openType='getUserInfo' className='wx-login-btn' onGetUserInfo={this.wxLogin}>微信直接登录</Button>
+            Taro.getEnv() === Taro.ENV_TYPE.WEAPP
+              ? <Button type='primary' openType='getUserInfo' className='wx-login-btn' onGetUserInfo={this.wxLogin}>微信直接登录</Button>
+              : /MicroMessenger/i.test(window.navigator.userAgent)
+                ? <View className='button-primary' onClick={this.wxLogin}>微信直接登录</View>
+                : ''
           }
-          <Button type='primary' className='account-login-btn' onClick={this.accountLogin}>账号登录</Button>
+          <View className='button-default mt1rem' onClick={this.accountLogin}>账号登录</View>
         </View>
       </View>
     );
   }
 }
+
 export default Login;
