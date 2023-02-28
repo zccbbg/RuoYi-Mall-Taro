@@ -16,6 +16,7 @@ export default {
     'pages/search/search',
 
     'pages/auth/register/register',
+    'pages/auth/callback/callback',
     'pages/ucenter/order/order',
     'pages/ucenter/orderDetail/orderDetail',
     'pages/ucenter/aftersaleList/aftersaleList',
@@ -28,7 +29,6 @@ export default {
     'pages/category/category',
     'pages/coupon/coupon',
     'pages/auth/reset/reset'
-
   ],
   window: {
     backgroundTextStyle: 'light',

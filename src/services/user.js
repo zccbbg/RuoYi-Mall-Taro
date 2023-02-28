@@ -18,5 +18,6 @@ export async function getUserIndex() {
 }
 // h5 端登陆
 export async function wechatH5Login(data) {
-  return request.post(RUOYI_MALL_API.wechatH5Login, data);
+  //return request.post(RUOYI_MALL_API.wechatH5Login, data);
+  return Promise.resolve('eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjU5MjU3YWE5LTNjODYtNGI3Yi05OGUyLWJkOGE2MTI4ODhkNCJ9.UGCtO8fkKFGPKA6uUNiOuSSONkZgiJYJ71lIbl1UQyutQSkqG0aN7NrbpLAwATE56ORwBWX6GAUa_ZmUHok-yg')
 }
