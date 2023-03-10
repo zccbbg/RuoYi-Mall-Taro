@@ -115,7 +115,7 @@ class Index extends PureComponent {
   }
 
   render () {
-    const {goodsCount, data, theme} = this.props;
+    let {goodsCount, data} = this.props;
     return (
       <Block>
         <View className='bar-container container'>

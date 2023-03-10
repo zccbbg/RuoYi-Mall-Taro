@@ -41,7 +41,28 @@ export default {
     *getIndex(_, {call, put}) {
       const res = yield call(getIndex);
       if (res.banners) {
-        res.banners = JSON.parse(res.banners);
+        res.banners = [
+  {
+    "id": 1,
+    "linkUrl": "/pages/goods/goods?id=15",
+    "imgUrl": "https://ruoyi-mall-sz.oss-cn-shenzhen.aliyuncs.com/2023/01/800X400blue.png"
+  },
+  {
+    "id": 2,
+    "linkUrl": "/pages/goods/goods?id=15",
+    "imgUrl": "https://ruoyi-mall-sz.oss-cn-shenzhen.aliyuncs.com/2023/01/800X400blue.png"
+  },
+  {
+    "id": 3,
+    "linkUrl": "/pages/goods/goods?id=15",
+    "imgUrl": "https://ruoyi-mall-sz.oss-cn-shenzhen.aliyuncs.com/2023/01/800X400blue.png"
+  },
+  {
+    "id": 4,
+    "linkUrl": "/pages/goods/goods?id=15",
+    "imgUrl": "https://ruoyi-mall-sz.oss-cn-shenzhen.aliyuncs.com/2023/01/800X400blue.png"
+  }
+];
       }
       // console.log('--home--', res);
       yield put({type: 'save', payload: res});
