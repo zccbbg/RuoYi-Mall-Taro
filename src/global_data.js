@@ -24,3 +24,6 @@ export function set(key, val) {
 export function get(key) {
   return globalData[key]
 }
+export function removeGlobalByKey(key) {
+  delete globalData[key];
+}

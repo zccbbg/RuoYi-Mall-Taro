@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, Text , Button, Navigator} from '@tarojs/components';
-import { orderPrepay } from '../../services/order';
-import { showErrorToast } from '../../utils/util';
+import React, {Component} from 'react';
+import Taro, {getCurrentInstance} from '@tarojs/taro';
+import {Navigator, Text, View} from '@tarojs/components';
+import {orderPrepay} from '../../services/order';
+import {showErrorToast} from '../../utils/util';
 import './index.less';
 
 class Index extends Component {
@@ -18,7 +18,7 @@ class Index extends Component {
      const { orderId, status } = this.$instance.router.params;
      this.setState({
       orderId: orderId,
-      status: status === '1' ? true : false
+      status: status === '1'
     })
   }
 
@@ -54,7 +54,7 @@ class Index extends Component {
   render() {
     const {status} = this.state;
     return (
-      <View className='container'>
+      <View className='pay-result-container'>
         <View className='pay-result'>
           {
             status && <View className='success'>

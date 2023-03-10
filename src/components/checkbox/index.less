@@ -1,0 +1,21 @@
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  @w: 18Px;
+  .check {
+    border-radius: 50%;
+    height: @w;
+    width: @w;
+    text-align: center;
+    border: 1px solid #d6e4ef;
+    margin-right: 8Px;
+    font-size: 12Px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.checked {
+      background-color: #6190e8;
+      color: white;
+    }
+  }
+}

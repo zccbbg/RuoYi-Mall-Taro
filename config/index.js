@@ -45,7 +45,11 @@ const config = {
     }
   },
   h5: {
-    publicPath: '/',
+    publicPath: '/h5',
+    router: {
+      basename: '/h5',
+      mode: 'browser',
+    },
     staticDirectory: 'static',
     esnextModules: ['taro-ui'],
     postcss: {

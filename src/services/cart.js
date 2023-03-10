@@ -32,7 +32,7 @@ export async function cartCheckout(payload) {
  *  提交订单
  */
 export async function orderSubmit(payload) {
-  return request.post(Api.OrderSubmit, payload);
+  return request.post(RUOYI_MALL_API.OrderSubmit, payload);
 }
 
 /**

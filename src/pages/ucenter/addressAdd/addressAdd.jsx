@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import Taro, {getCurrentInstance} from '@tarojs/taro';
 import {Block, Button, Input, ScrollView, View} from '@tarojs/components';
-import {AtCheckbox} from 'taro-ui';
 import * as area from '../../../utils/area';
 import {showErrorToast} from '../../../utils/util';
 import * as check from '../../../utils/check';
 import {getAddressDetail, saveAddress} from '../../../services/address';
+import Checkbox from '../../../components/checkbox/Checkbox';
 
 import './index.less';
 
-const checkboxOption = [{value: 'default', label: '设为默认地址'}];
 const getDefaultSelected = () => {
   return [{
     code: 0,
@@ -52,7 +51,6 @@ class Index extends Component {
     regionType: 0,
     // 行政区域列表
     regionList: [],
-    checkedList: []
   }
 
   componentWillMount() {
@@ -98,10 +96,10 @@ class Index extends Component {
   chooseRegion = () => {
     this.setState({openSelectRegion: true});
 
-    const {address} = this.state
+    const { address, regionList } = this.state
     //设置区域选择数据
     const {areaCode, province, city, district} = address;
-    if (areaCode) {
+    if ( areaCode && regionList.length === 0 ) {
       const s1 = [
         {
           code: areaCode.slice(0, 2) + '0000',
@@ -116,15 +114,14 @@ class Index extends Component {
           name: district,
         },
       ];
-
-      let regionList = area.getList('district', areaCode.slice(0, 4));
-
       this.setState({
         selectedRegionList: s1,
         regionType: 2,
-        regionList: regionList
+        regionList: area.getList('county', areaCode.slice(0, 4))
       });
-    } else {
+      return;
+    }
+    if (!areaCode) {
       this.setState({
         selectedRegionList: getDefaultSelected(),
         regionType: 0,
@@ -143,10 +140,9 @@ class Index extends Component {
 
   bindIsDefault = (value) => {
     let address = this.state.address;
-    address.defaultStatus = !address.defaultStatus;
+    address.defaultStatus = value;
     this.setState({
       address: address,
-      checkedList: value,
     });
   }
 
@@ -242,9 +238,15 @@ class Index extends Component {
   }
 
   selectRegionType = (clickIndex) => {
-    const { selectedRegionList, regionType } = this.state;
-
-    if (clickIndex >= regionType) {
+    const { selectedRegionList } = this.state;
+    let vIndex = -1;
+    for (let i = 0; i < selectedRegionList.length; i++) {
+      if (!selectedRegionList[i].code) {
+        break;
+      }
+      vIndex = i;
+    }
+    if (clickIndex > vIndex) {
       return false;
     }
 
@@ -273,7 +275,6 @@ class Index extends Component {
       selectedRegionList,
       regionType,
       regionList,
-      checkedList
     } = this.state;
     const selectRegionDone = selectedRegionList.every(it => it.code !== 0)
     return (
@@ -292,8 +293,8 @@ class Index extends Component {
             <View className='form-item'>
               <Input className='input' onInput={this.bindinputAddress} value={address.detailAddress} placeholder='详细地址, 如街道、楼盘号等' />
             </View>
-            <View className='form-default'>
-              <AtCheckbox options={checkboxOption} selectedList={checkedList} onChange={this.bindIsDefault} />
+            <View className='form-item'>
+              <Checkbox checked={address.defaultStatus} onChange={this.bindIsDefault} />
             </View>
           </View>
 
@@ -304,8 +305,8 @@ class Index extends Component {
 
           {
             openSelectRegion && <View className='region-select'>
-              <View className='hd'>
-                <View className='region-selected'>
+              <View className='hd flex-center'>
+                <View className='region-selected flex-one'>
                   {
                     selectedRegionList.map((item, index) => {
                       return <View

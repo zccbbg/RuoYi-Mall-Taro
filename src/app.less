@@ -6,6 +6,11 @@ page {
 body, div, .hydrated {
   box-sizing: border-box;
 }
+body {
+  margin: auto;
+  max-width: 414Px;
+  font-size: 14Px;
+}
 .taro_page {
   font-size: 14px;
 }
@@ -91,6 +96,9 @@ div, img, span, navigator {
   text-overflow: ellipsis;
   display: inline-block;
 }
+.flex {
+  display: flex;
+}
 .p1rem {
   padding: 1rem;
 }
@@ -138,7 +146,7 @@ div, img, span, navigator {
   bottom: 0;
   right: 0;
 }
-[class^=button-] {
+[class*=button-] {
   line-height: 98px;
   font-size: 25px;
   color: #f4f4f4;
@@ -152,9 +160,14 @@ div, img, span, navigator {
   color: #b4282d;
   border: 1px solid #b4282d;
 }
+.button-default {
+  background-color: #cecece;
+  border: 1px solid #cecece;
+  color: white;
+}
 .ops {
   justify-content: space-around;
-  [class^=button-] {
+  > [class*=button-] {
     width: 45%;
   }
 }
@@ -167,4 +180,17 @@ div, img, span, navigator {
 }
 .mr12 {
   margin-right: 12Px;
+}
+.mt1rem {
+  margin-top: 1rem;
+}
+.clickable {
+  color: #b4282d;
+}
+.middle-img {
+  width: 3rem;
+  height: 3rem;
+}
+:root {
+  --border-color: #f9f9f9;
 }

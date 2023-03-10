@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {connect} from "react-redux";
 import Taro from '@tarojs/taro';
-import { View, Text , Image, Input} from '@tarojs/components';
-import { AtIcon } from 'taro-ui';
-import { cartCheckout, orderSubmit, orderPrepay } from '../../services/cart';
+import {Image, Input, Text, View} from '@tarojs/components';
+import {cartDelete, orderSubmit} from '../../services/cart';
 import {showErrorToast} from '../../utils/util';
 
 import './index.less';
 import ReceiverAddress from "../../components/receiver-address/ReceiverAddress";
 import {STORAGE_KEYS} from "../../config/storageKeys";
 
+@connect(({user}) => {
+  return {
+    selectedAddress: user.selectedAddress
+  }
+})
 class Index extends Component {
 
   state={
@@ -19,7 +24,6 @@ class Index extends Component {
 
   componentWillMount () {}
   componentDidMount () {}
-  componentWillReceiveProps (nextProps,nextConText) {}
   componentWillUnmount () {}
   componentDidShow () {
     this.getCheckoutInfo();
@@ -49,47 +53,57 @@ class Index extends Component {
   }
 
   submitOrder = () => {
-    if (this.state.addressId <= 0) {
+    const { selectedAddress } = this.props;
+    if (!selectedAddress) {
       showErrorToast('请选择收货地址');
       return false;
     }
+    const { message, checkedGoodsList } = this.state;
     orderSubmit({
-      addressId: this.state.addressId,
-      message: this.state.message,
+      addressId: selectedAddress.id,
+      note: message,
+      skus: checkedGoodsList.map(it => ({ skuId: it.skuId, quantity: it.quantity }))
     }).then(res => {
+      // 结算成功，如果是购物车下单，删除购物车商品
+      const ids = checkedGoodsList.map(it => it.id).filter(it => it)
+      if (ids.length > 0) {
+        cartDelete(ids);
+      }
       const orderId = res.orderId;
-        orderPrepay({
-          orderId: orderId
-        }).then(res => {
-          const payParam = res;
-          console.log("支付过程开始");
-          Taro.requestPayment({
-            'timeStamp': payParam.timeStamp,
-            'nonceStr': payParam.nonceStr,
-            'package': payParam.packageValue,
-            'signType': payParam.signType,
-            'paySign': payParam.paySign,
-            'success': function(res) {
-              console.log("支付过程成功");
-              Taro.redirectTo({
-                url: '/pages/payResult/payResult?status=1&orderId=' + orderId
-              });
-            },
-            'fail': function(res) {
-              console.log("支付过程失败");
-              Taro.redirectTo({
-                url: '/pages/payResult/payResult?status=0&orderId=' + orderId
-              });
-            },
-            'complete': function(res) {
-              console.log("支付过程结束")
-            }
-          });
-        }).catch(() => {
-          Taro.redirectTo({
-            url: '/pages/payResult/payResult?status=0&orderId=' + orderId
-          });
-        })
+      Taro.redirectTo({
+        url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+      });
+      /*orderPrepay({
+        orderId: orderId
+      }).then(res => {
+        const payParam = res;
+        Taro.requestPayment({
+          'timeStamp': payParam.timeStamp,
+          'nonceStr': payParam.nonceStr,
+          'package': payParam.packageValue,
+          'signType': payParam.signType,
+          'paySign': payParam.paySign,
+          'success': function(res) {
+            console.log("支付过程成功");
+            Taro.redirectTo({
+              url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+            });
+          },
+          'fail': function(res) {
+            console.log("支付过程失败");
+            Taro.redirectTo({
+              url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+            });
+          },
+          'complete': function(res) {
+            console.log("支付过程结束")
+          }
+        });
+      }).catch(() => {
+        Taro.redirectTo({
+          url: '/pages/payResult/payResult?status=0&orderId=' + orderId
+        });
+        })*/
     })
   }
 
