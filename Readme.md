@@ -39,9 +39,11 @@ http://mall.ichengle.top/
 npm install -g @tarojs/cli@3.5.11
 
 #### h5
-* `npm run build:h5` 启动服务
+* `npm run dev:h5` 启动服务
 * 打开浏览器
 
+### 编译
+npm run build:h5
 系列文章
 --------
 * [01 Taro_Mall 开源多端小程序框架设计](https://www.cnblogs.com/qiaojie/p/12431670.html)
@@ -92,9 +94,9 @@ npm install -g @tarojs/cli@3.5.11
 
 ## 交流群
 
-|                          [点击加入qq群](https://jq.qq.com/?_wv=1027&k=u59FVnYG)                           |
-|:--------------------------------------------------------------:|
-|           <img src="doc/qqgroup.jpg" width="200px">            | 
+|  [点击加入qq群](https://jq.qq.com/?_wv=1027&k=u59FVnYG) |
+|:----------------------------------------------------  :|
+|           <img src="doc/qqgroup.jpg" width="200px">     | 
 
 |              微信群： 关注公众号，回复：加群     |
 |:------------------------------------------:|
