@@ -11,6 +11,7 @@ import './index.less'
 @connect(({ home, goods, config }) => ({
   data: home.data,
   goodsCount: goods.goodsCount,
+  productList: goods.productList,
   theme: config.theme
 }))
 class Index extends PureComponent {
@@ -24,6 +25,7 @@ class Index extends PureComponent {
     const { dispatch } = this.props;
     dispatch({type: 'home/getIndex'})
     dispatch({type: 'goods/getGoodsCount'})
+    dispatch({type: 'goods/getProductList'})
   }
 
   onPullDownRefresh() {
@@ -115,7 +117,8 @@ class Index extends PureComponent {
   }
 
   render () {
-    let {goodsCount, data} = this.props;
+    let {goodsCount, data,productList} = this.props;
+    console.log(productList)
     return (
       <Block>
         <View className='bar-container container'>
@@ -149,35 +152,27 @@ class Index extends PureComponent {
             }
           </View>
 
-          {
-            data.categoryList && data.categoryList.length > 0 && data.categoryList.map(item => {
-              return <View className='good-grid' key={item.id}>
-                <View className='h'>
-                  <Text>{item.name}</Text>
-                </View>
-                <View className='b'>
-                  {
-                    item.productList && item.productList.map((good, index) => {
-                      return  <Block key={good.id}>
-                        <View className={`item ${index % 2 == 0 ? '' : 'item-b'}`}>
-                          <Navigator url={`/pages/goods/goods?id=${good.id}`} className='a'>
-                            <Image className='img' src={good.pic}></Image>
-                            <Text className='name'>{good.name}</Text>
-                            {
-                              good.price && <Text className='price'>￥{good.price}</Text>
-                            }
-                          </Navigator>
-                        </View>
-                      </Block>
-                    })
-                  }
-                </View>
-                <Navigator url={`/pages/category/category?parentId=${item.id}`} className='t'>
-                  <View className='txt'>{'更多'+item.name+'好物 >'}</View>
-                </Navigator>
-              </View>
-            })
-          }
+          
+          <View className='good-grid'>
+            <View className='b'>
+              {
+                productList && productList.map((good, index) => {
+                  return  <Block key={good.id}>
+                    <View className={`item ${index % 2 == 0 ? '' : 'item-b'}`}>
+                      <Navigator url={`/pages/goods/goods?id=${good.id}`} className='a'>
+                        <Image className='img' src={good.pic}></Image>
+                        <Text className='name'>{good.name}</Text>
+                        {
+                          good.price && <Text className='price'>￥{good.price}</Text>
+                        }
+                      </Navigator>
+                    </View>
+                  </Block>
+                })
+              }
+            </View>
+          </View>
+          
         </View>
       </Block>
     )

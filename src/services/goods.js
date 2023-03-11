@@ -20,6 +20,9 @@ export async function getGoodsList({keyword, page, limit, sort, order, categoryI
  *  分页获取商品信息
  */
 export async function getGoodsList1(data, params) {
+  if(!params){
+    params={page:0,size:100}
+  }
   const url = RUOYI_MALL_API.GoodsList + '?page=' + params.page + '&size=' + params.size;
   return request.post(url, data);
 }

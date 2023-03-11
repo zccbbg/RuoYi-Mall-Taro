@@ -93,9 +93,9 @@ export const RUOYI_MALL_API = {
   IndexUrl: RUOYI_MALL_ROOT + 'no-auth/home/home-cfg', //首页数据接口
   CatalogList: RUOYI_MALL_ROOT + 'no-auth/category/all-categories', //首页数据接口
   GoodsCategory: RUOYI_MALL_ROOT + 'no-auth/category/category-by-id', //获得分类数据
-  GoodsList: RUOYI_MALL_ROOT + 'no-auth/good/list', //获得商品列表
+  GoodsList: RUOYI_MALL_ROOT + 'no-auth/product/list', //获得商品列表
   CartGoodsCount: RUOYI_MALL_ROOT + 'h5/cart/goodscount', // 获取购物车商品件数
-  GoodsDetail: RUOYI_MALL_ROOT + 'no-auth/good/detail', //获得商品的详情
+  GoodsDetail: RUOYI_MALL_ROOT + 'no-auth/product/detail', //获得商品的详情
   wechatH5Login: RUOYI_MALL_ROOT + 'no-auth/wechat/h5-login', //手机端微信登陆
   AuthLoginByAccount: RUOYI_MALL_ROOT + 'login', //账号登录
   getInfo: RUOYI_MALL_ROOT + 'getInfo', // 获取用户信息

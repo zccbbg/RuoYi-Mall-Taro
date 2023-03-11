@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import {getCatalogList, getCurrentCategory} from '../services/catalog';
+import {getCatalogList} from '../services/catalog';
 
 export default {
   namespace: 'catalog',
