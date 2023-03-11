@@ -160,7 +160,7 @@ class Index extends PureComponent {
                     item.productList && item.productList.map((good, index) => {
                       return  <Block key={good.id}>
                         <View className={`item ${index % 2 == 0 ? '' : 'item-b'}`}>
-                          <Navigator url={`../goods/goods?id=${good.id}`} className='a'>
+                          <Navigator url={`/pages/goods/goods?id=${good.id}`} className='a'>
                             <Image className='img' src={good.pic}></Image>
                             <Text className='name'>{good.name}</Text>
                             {
