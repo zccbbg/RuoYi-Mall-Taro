@@ -144,7 +144,7 @@ class Index extends PureComponent {
           <View className='m-menu'>
             {
               data.categoryList && data.categoryList.map(item => {
-                return <Navigator key={item.id} className='item' url={`/pages/category/category?parentId=${item.id}`}>
+                return <Navigator key={item.id} className='item' url={`/pages/catalog/catalog?id=${item.id}`}>
                   <Image className='img' src={item.icon} />
                   <Text className='txt'>{item.name}</Text>
                 </Navigator>

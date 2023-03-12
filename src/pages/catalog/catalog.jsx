@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import Taro from '@tarojs/taro';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text , Navigator, ScrollView, Image, Block} from '@tarojs/components';
 import { connect } from 'react-redux';
 import './index.less';
@@ -11,11 +11,19 @@ import {Empty} from "../../components";
   goodsCount: goods.goodsCount,
 }))
 class Index extends Component {
-
-  state={}
+  $instance = getCurrentInstance()
+  state={
+    id:0,
+  }
 
   componentDidMount () {
+    const { id } = this.$instance.router.params;
     this.getData();
+    if(id){
+      this.setState({
+        id: +id,
+      })
+    };
   }
 
   onPullDownRefresh() {
