@@ -3,9 +3,11 @@ import Taro from '@tarojs/taro';
 import { View, Text , Navigator, ScrollView, Image, Block} from '@tarojs/components';
 import { connect } from 'react-redux';
 import './index.less';
+import {Empty} from "../../components";
 
-@connect(({catalog, goods}) => ({
+@connect(({home,catalog, goods}) => ({
   ...catalog,
+  data:home.data,
   goodsCount: goods.goodsCount,
 }))
 class Index extends Component {
@@ -30,6 +32,7 @@ class Index extends Component {
       cbk && cbk()
     })
     dispatch({type: 'goods/getGoodsCount'})
+    dispatch({type: 'home/getIndex'})
   }
 
   switchCate = (data) => {
@@ -43,7 +46,7 @@ class Index extends Component {
   }
 
   render() {
-    const {categoryList, currentCategory, currentSubCategory, goodsCount} = this.props;
+    const {categoryList, currentCategory, currentSubCategory, goodsCount,data} = this.props;
     return (
       <Block>
         <View className='bar-container container'>
@@ -56,7 +59,7 @@ class Index extends Component {
           <View className='catalog'>
             <ScrollView className='nav' scrollY>
               {
-                Array.isArray(categoryList) && categoryList.map(item => {
+                Array.isArray(data.categoryList) && data.categoryList.map(item => {
                   return  <View
                     className={`item ${ currentCategory.id === item.id ? 'active' : ''}`}
                     key={item.id}
@@ -68,24 +71,18 @@ class Index extends Component {
               }
             </ScrollView>
             <ScrollView className='cate' scrollY>
-              <Navigator url='url' className='banner'>
-                <Image className='image' src={currentCategory.icon}></Image>
-                <View className='txt'>{currentCategory.name}</View>
-              </Navigator>
-              <View className='hd'>
-                <Text className='line'></Text>
-                <Text className='txt'>{currentCategory.name}分类</Text>
-                <Text className='line'></Text>
-              </View>
               <View className='bd'>
                 {
-                  Array.isArray(currentSubCategory) && currentSubCategory.map((item, index) => {
-                    return <Navigator url={`/pages/category/category?id=${item.id}`} className={`item ${(index+1) % 3 == 0 ? 'last' : ''}`} key={item.id}>
-                      <Image className='icon' src={item.icon}></Image>
-                      <Text className='txt'>{item.name}</Text>
-                    </Navigator>
-                  })
-                }
+                !currentCategory.productList || currentCategory.productList.length === 0
+                  ? <Empty>暂无商品</Empty>
+                  : currentCategory.productList.map((iitem, iindex)  => {
+                  return <Navigator className={`item ${(iindex + 1) % 2 == 0 ? 'item-b' : ''}`} url={`/pages/goods/goods?id=${iitem.id}`} key={iitem.id}>
+                    <Image className='img' src={iitem.pic} background-size='cover'></Image>
+                    <Text className='name lineov1'>{iitem.name}</Text>
+                    <Text className='price'>￥{iitem.price}</Text>
+                  </Navigator>
+                })
+              }
               </View>
             </ScrollView>
           </View>
