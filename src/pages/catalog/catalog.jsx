@@ -78,17 +78,15 @@ class Index extends Component {
                 })
               }
             </ScrollView>
-            <ScrollView className='cate' scrollY>
-              <View className='bd'>
+            <ScrollView className='main' scrollY>
+              <View className='background'>
                 {
-                !currentCategory.productList || currentCategory.productList.length === 0
-                  ? <Empty>暂无商品</Empty>
-                  : currentCategory.productList.map((iitem, iindex)  => {
+                !currentCategory.productList || currentCategory.productList.length === 0 ? <Empty>暂无商品</Empty> : currentCategory.productList.map((iitem, iindex)  => {
                   return <Navigator className='item' url={`/pages/goods/goods?id=${iitem.id}`} key={iitem.id}>
-                    <Image className='img' src={iitem.pic} background-size='cover'></Image>
-                    <Text className='name lineov1'>{iitem.name}</Text>
-                    <Text className='price'>￥{iitem.price}</Text>
-                  </Navigator>
+                          <Image className='img' src={iitem.pic} background-size='cover'></Image>
+                          <Text className='name lineov1'>{iitem.name}</Text>
+                          <Text className='price'>￥{iitem.price}</Text>
+                        </Navigator>
                 })
               }
               </View>
