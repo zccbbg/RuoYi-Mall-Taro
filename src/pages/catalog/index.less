@@ -73,8 +73,8 @@ page {
 .catalog .cate {
   border-left: 1px solid #fafafa;
   flex: 1;
-  height: 100%;
-  padding: 0 30px 0 30px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .banner {
@@ -129,17 +129,14 @@ page {
 }
 
 .catalog .bd {
-  height: auto;
   width: 100%;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-around;
 }
 
 .catalog .bd .item {
-  display: block;
-  float: left;
-  height: 216px;
-  width: 144px;
-  margin-right: 34px;
+  width: 45%;
+  text-align: center;
 }
 
 .catalog .bd .item.last {
