@@ -58,11 +58,8 @@ class Index extends Component {
     return (
       <Block>
         <View className='bar-container container'>
-          <View className='search'>
-            <Navigator url='/pages/search/search' className='input'>
-              <van-icon name='search' />
-              <Text className='txt'>商品搜索, 共{goodsCount}款好物</Text>
-            </Navigator>
+          <View className='header'>
+            <Text className='h1'>商品分类</Text>
           </View>
           <View className='catalog'>
             <ScrollView className='nav' scrollY>
